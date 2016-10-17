@@ -105,7 +105,8 @@ install.packages("ggdmc_0.1.3.4.tar.gz", repos = NULL, type="source")
 
 ## Contributors
 
-The C++ codes are developed by [Yi-Shin Lin](http://www.tascl.org/yi-shin-lin.html) 
+The C++ codes are developed by [Yi-Shin Lin](http://www.tascl.org/yi-shin-lin.html). 
+
 The DMC R codes are developed by [Andrew Heathcote](http://www.tascl.org/andrew-heathcote.html) 
 
 ## License
