@@ -86,11 +86,10 @@ plot(samples0)  ## Check traceplot to see the fit
 
 ### Prerequisities
  -  R (>= 3.0.2)
- -  Rcpp (>= 0.12.3), RcppArmadillo (>= 0.6.700.6.0), , ggplot2 (>= 2.1.0),
+ -  Rcpp (>= 0.12.3), RcppArmadillo (>= 0.6.700.6.0), ggplot2 (>= 2.1.0),
  rtdists (>= 0.6-6), gridExtra (>= 2.2-1), ggmcmc (>= 0.7.3), 
- ggthemes (>= 3.0.1), 
- snowfall (>= 1.84.6-1), stats (>= 3.2.2), hypergeo, pracma, statmod, 
- loo (>= 0.1.6), 
+ ggthemes (>= 3.0.1),  snowfall (>= 1.84.6-1), stats (>= 3.2.2), 
+ hypergeo (>= 1.2-13), pracma (>= 1.8.8), statmod (>= 1.4.24), loo (>= 0.1.6) 
  - coda (>= 0.16-1)
  - For plotting posterior and prior density together, you would need to install
  our modifid coda package (0.18-1.3)
@@ -105,7 +104,7 @@ install.packages("ggdmc_0.1.3.4.tar.gz", repos = NULL, type="source")
 
 ## Contributors
 
-The C++ codes are developed by [Yi-Shin Lin](http://www.tascl.org/yi-shin-lin.html). 
+The ggdmc C++ codes are developed by [Yi-Shin Lin](http://www.tascl.org/yi-shin-lin.html). 
 
 
 The DMC R codes are developed by [Andrew Heathcote](http://www.tascl.org/andrew-heathcote.html) 
