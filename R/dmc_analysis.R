@@ -677,11 +677,11 @@ Dstats.ddm <- function(samples, save=FALSE, fast=TRUE) {
     D <- -2*samples$log_likelihoods
   } else {
     D <- apply(samples$theta, c(3,1), function(x) {
-    -2*sum(log(likelihood.ddm(x, samples$data)))})
+    -2*sum(log(likelihood.rd(x, samples$data)))})
   }
 
   mtheta <- apply(samples$theta, 2, mean)
-  Dmean <- -2*sum(log(likelihood.ddm(mtheta, samples$data)))
+  Dmean <- -2*sum(log(likelihood.rd(mtheta, samples$data)))
   minD <- min(D)
 
   if (save)

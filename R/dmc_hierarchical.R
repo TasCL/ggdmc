@@ -4,9 +4,15 @@
 #    Usually user does not need to edit
 
 
-#' Simulate Choice-response Data for Multiple Participants
+#' Simulate Choice-RT Data for Multiple Participants
 #'
-#' A function generates random choice-RT responses for multiple participants.
+#' \code{h.simulate.dmc} generates random choice-RT responses based on an EAM
+#' model, which usually set up by \code{model.dmc} and a prior distribution
+#' settings, which usually created by \code{prior.p.dmc}.
+#'
+#' The simulation engine of the diffusoin model calls \code{rdiffusion} in
+#' \pkg{rtdists}, which is adapted Voss & Voss' \code{construct-sample} C
+#' function in their \pkg{fast-dm} C software
 #'
 #' \code{h.simulate.dmc} behaves like \code{simulate.dmc}, but creates data
 #' for a set of \code{ns} subjects. It simulates based either on a
@@ -17,11 +23,12 @@
 #' parameters stochastically based on the supplied prior distributions (stored
 #' in the user supplied \code{p.prior}).
 #'
-#' \code{ps} stands for "true" model parameters. It can be a vector exactly
-#' like \code{p.vector}, in which case each subject has identical parameters.
-#' All equal to the values in \code{p.vector}.  \code{ps} can also be a matrix
-#' with one row per subject, in which case must have \code{ns} rows. It is
-#' saved (in expanded form) as "parameters" attribute in the generated data.
+#' \code{ps} stands for "true" model \emph{p}arameter\emph{s}. It can be a
+#' vector exactly like \code{p.vector}, in which case each subject has
+#' identical parameters. All equal to the values in \code{p.vector}. \code{ps}
+#' can also be a matrix with one row per subject, in which case must have
+#' \code{ns} rows. It is saved (in expanded form) as "parameters" attribute in
+#' the generated data.
 #'
 #' \code{p.prior} is a list of distributions from which subject parameters
 #' are sampled. It is usually created by \code{prior.p.dmc} and will be saved
@@ -49,20 +56,20 @@
 #' @examples
 #' ## Set up a DDM Model, rate effect of factor F
 #' m1 <- model.dmc(
-#'   p.map     = list(a="1",v="F",z="1",d="1",sz="1",sv="1",t0="1",st0="1"),
-#'   match.map = list(M=list(s1="r1",s2="r2")),
-#'   factors=list(S=c("s1","s2"), F=c("f1","f2")),
-#'   constants = c(st0=0,d=0),
-#'   responses = c("r1","r2"),
-#'   type = "rd")
+#'  p.map     = list(a="1", v="F", z="1", d="1", sz="1", sv="1", t0="1", st0="1"),
+#'  match.map = list(M=list(s1="r1", s2="r2")),
+#'  factors   = list(S=c("s1","s2"), F=c("f1","f2")),
+#'  constants = c(st0=0,d=0),
+#'  responses = c("r1","r2"),
+#'  type      = "rd")
 #'
 #' ## Population distribution
-#' pop.mean  <- c(a=2,   v.f1=2.5, v.f2=1.5, z=0.5, sz=0.3, sv=1,  t0=0.3)
-#' pop.scale <- c(a=0.5, v.f1=.5,  v.f2=.5,  z=0.1, sz=0.1, sv=.3, t0=0.05)
+#' p.mean  <- c(a=2,   v.f1=2.5, v.f2=1.5, z=0.5, sz=0.3, sv=1,  t0=0.3)
+#' p.scale <- c(a=0.5, v.f1=.5,  v.f2=.5,  z=0.1, sz=0.1, sv=.3, t0=0.05)
 #' pop.prior <- prior.p.dmc(
 #'   dists = rep("tnorm",7),
-#'   p1    = pop.mean,
-#'   p2    = pop.scale,
+#'   p1    = p.mean,
+#'   p2    = p.scale,
 #'   lower = c(0,-5, -5, 0, 0, 0, 0),
 #'   upper = c(5, 7,  7, 2, 2, 2, 2))
 #'
@@ -70,8 +77,8 @@
 #' plot_priors(pop.prior)
 #'
 #' ## Simulate some data
-#' dat <- h.simulate.dmc(m1, nsim=20, ns=5, p.prior=pop.prior)
-#' head(dat)
+#' dat1 <- h.simulate.dmc(m1, nsim=20, ns=5, p.prior=pop.prior)
+#' head(dat1)
 #' ##    S  F  R        RT
 #' ## 1 s1 f1 r1 0.9227881
 #' ## 2 s1 f1 r1 0.7878554
@@ -79,12 +86,43 @@
 #' ## 4 s1 f1 r1 0.6864110
 #' ## 5 s1 f1 r1 0.5068179
 #' ## 6 s1 f1 r1 0.6356547
+#'
+#' ## Use LBA as an example
+#' m2 <- model.dmc(
+#'       p.map     = list(A="1", B="1", mean_v="M", sd_v="M", t0="1", st0="1"),
+#'       match.map = list(M=list(s1=1, s2=2)),
+#'       factors   = list(S=c("s1", "s2")),
+#'       constants = c(st0= 0, sd_v.false=1),
+#'       responses = c("r1", "r2"),
+#'       type      = "norm")
+#'
+#' ## Population distribution
+#' p.mean  <- c(A=.4,B=.6,mean_v.true=1,mean_v.false=0,sd_v.true = .5,t0=.3)
+#' p.scale <- c(A=.1,B=.1,mean_v.true=.2,mean_v.false=.2,sd_v.true = .1,t0=.05)
+#' pop.prior <- prior.p.dmc(
+#'     dists = c("tnorm","tnorm","tnorm","tnorm","tnorm","tnorm"),
+#'     p1=p.mean, p2=p.scale,
+#'     lower=c(0,0,NA,NA,0,.1),upper=c(NA,NA,NA,NA,NA,1))
+#'
+#' ## A data frame
+#' dat2 <- h.simulate.dmc(m2, nsim=30, p.prior=pop.prior, ns=10) ##
+#'
+#' ## A 10-element list; each element is a participant
+#' mdi2 <- data.model.dmc(dat2, m2)
+#' head(mdi2[[1]])     ## Check the first participant (s1)
+#' ##    S  R        RT
+#' ## 1 s1 r1 0.7793124
+#' ## 2 s1 r2 0.5736594
+#' ## 3 s1 r2 0.6900489
+#' ## 4 s1 r2 2.3713993
+#' ## 5 s1 r1 1.5139890
+#' ## 6 s1 r2 0.5649499
 h.simulate.dmc <- function(object, nsim=2, seed=NULL, ns=1, ps=NA, SSD=Inf,
   p.prior=NA, staircase=NA, subject.cv=NULL)
 {
   model <- object
   # Check nsim
-  ncell <- prod(unlist(lapply(attr(model,"factors"), length)))
+  ncell <- prod(unlist(lapply(attr(model, "factors"), length)))
   if (!is.matrix(nsim) & (is.vector(nsim) & length(nsim) != 1))
     stop("nsim must be a scalar or matrix")
   if (is.matrix(nsim))
@@ -201,6 +239,7 @@ make.hstart <- function(fsamples,
   # Uses the results of fixed effects fitting to get a start prior for hierarchcial
   # By default sets prior sd to 1% of mean (tight), can specify as a vector
   # Prints prior parameters and can plot priors
+  ## Change to ggdmc version
 {
 
   mns <- lapply(fsamples,function(x){apply(x$theta,2,mean)})
@@ -238,11 +277,7 @@ make.hstart <- function(fsamples,
   cat("Mean\n"); print(round(sd,digits))
   cat("SD\n"); print(round(sigma.sd,digits))
 
-  if (do.plot) {
-    par(mfcol=layout)
-    for (i in names(mu.prior)) plot.prior(i,mu.prior,main="MU")
-    for (i in names(sigma.prior)) plot.prior(i,sigma.prior,main="SIGMA")
-  }
+  if (do.plot) { plot_priors(mu.prior); plot_priors(sigma.prior) }
 
   list(mu=mu.prior,sigma=sigma.prior)
 }

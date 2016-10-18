@@ -2,33 +2,44 @@
 % Please edit documentation in R/ggdmc_utils.R
 \name{view}
 \alias{view}
-\title{view function}
+\title{Inspect Prior Distribution Settings}
 \usage{
 view(p.prior)
 }
 \arguments{
-\item{p.prior}{a prior list}
+\item{p.prior}{a prior distribution list, usually created by
+\code{prior.p.dmc}}
 }
 \value{
-a p.prior data frame
+a data frame listing prior distribution settings
 }
 \description{
-a convenient function to rearrange p.prior or an element in pp.prior as a
-data frame to easily inspect. That is another function called View
-(uppercase) in utils packages.
+a convenient function to rearrange \code{p.prior} or an element in a
+\code{pp.prior} as a data frame for inspection.  Do not be confused by
+another function called View (uppercase) in \pkg{utils} package.
 }
 \examples{
-# Use a single value to replace all missing values
-pop.mean  <- c(a=1,  v.f1=1,  v.f2=.2, z=0.5, sz=0.3,  sv.f1=0.25,
-    sv.f2=0.23, t0=0.3)
-pop.scale <-c(a=0.2,v.f1=.2, v.f2=.2, z=0.1, sz=0.05, sv.f1=.05,
-    sv.f2=.05,  t0=0.05)
+pop.mean  <- c(a=1,  v.f1=1,  v.f2=.2, z=.5, sz=.3,  sv.f1=.25, sv.f2=.23,
+               t0=.3)
+pop.scale <- c(a=.2, v.f1=.2, v.f2=.2, z=.1, sz=.05, sv.f1=.05, sv.f2=.05,
+               t0=.05)
+
 p.prior <- prior.p.dmc(
   dists = rep("tnorm", 8),
-  p1=pop.mean,
-  p2=pop.scale,
-  lower=c(0,-5, -5, 0, 0, 0, 0,0),
-  upper=c(2, 5, 5, 1, 2, 2, 1, 1))
+  p1    = pop.mean,
+  p2    = pop.scale,
+  lower = c(0,-5, -5, 0, 0, 0, 0,0),
+  upper = c(2, 5, 5, 1, 2, 2, 1, 1))
+
 view(p.prior)
+##       mean   sd lower upper log  dist  untrans
+## a        1  0.2     0     2   1 tnorm identity
+## v.f1     1  0.2    -5     5   1 tnorm identity
+## v.f2   0.2  0.2    -5     5   1 tnorm identity
+## z      0.5  0.1     0     1   1 tnorm identity
+## sz     0.3 0.05     0     2   1 tnorm identity
+## sv.f1 0.25 0.05     0     2   1 tnorm identity
+## sv.f2 0.23 0.05     0     1   1 tnorm identity
+## t0     0.3 0.05     0     1   1 tnorm identity
 }
 

@@ -478,8 +478,7 @@ plot.deviance.dmc <- function(ds=NULL,samples=NULL,digits=2,fast=TRUE,
 plot.score.dmc <- function(data=NULL, rnd=2, xlim=c(0,5), ymax=NA, IQR=FALSE)
 
   {
-  if (is.null(data))
-    stop("Must supply the model-data instance")
+  if (is.null(data)) stop("Must supply the model-data instance")
 
   slevs <- sort(unique(data$S))
   rlevs <- sort(unique(data$R))
@@ -489,7 +488,7 @@ plot.score.dmc <- function(data=NULL, rnd=2, xlim=c(0,5), ymax=NA, IQR=FALSE)
   correct <- tolower(data$S)==tolower(data$R)
   print(round(mean(correct),rnd))
   print(round(tapply(data$RT,list(correct),mean),rnd))
-  plot.cell.density(data,C=correct,xlim=xlim)
+  plot_cell_density(data,C=correct, xlim=xlim)
 
   if (IQR)
     print(round(tapply(data$RT,list(correct),IQR),2)) # standard deviation

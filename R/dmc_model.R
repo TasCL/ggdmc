@@ -354,7 +354,22 @@ model.dmc <- function(p.map, factors=list(S=c("s1","s2")),
     attr(use.par,"is.r1") <- is.r1
   }
 
-  return(dmc(use.par))
+  ## Add class ##
+  attr(use.par, "class") <- switch(type,
+    norm        = c("array", "dmc", "norm"),
+    normN       = c("dmc", "normN"),
+    normgng     = c("dmc", "normgng"),
+    normgamma   = c("dmc", "normgamma"),
+    normgammaMR = c("dmc", "normgammaMR"),
+    normlnorm   = c("dmc", "normlnorm"),
+    lnr    = c("dmc", "lnr"),
+    lnrdr  = c("dmc", "lnrdr"),
+    lnrgng = c("dmc", "lnrgng"),
+    lnrss  = c("dmc", "lnrss"),
+    exgss  = c("dmc", "exgss"),
+    rd     = c("array", "dmc", "rd"))
+
+  return(use.par)
 }
 
 
@@ -395,31 +410,70 @@ check.p.vector <- function(p.vector,model)
 }
 
 
-print.cell.p <- function(p.vector,model)
-# Print accumulator x internal parameter type matrix for each cell
+#' Print accumulator x internal parameter type matrix for each cell
+#'
+#' A DMC model array, created by \code{model.dmc} is computationally efficient
+#' but it is not easy to see how parameters map to design cells.
+#' \code{print.cell.p} makes it easy to loop through cells and print the
+#' mapping.
+#'
+#' @param p.vector a parameter vector,
+#' @param model a DMC model
+#' @export
+#' @examples
+#' model <- model.dmc(
+#' p.map     = list(A = "1", B = "1", mean_v = "M", sd_v = "M", t0 = "1",
+#'                  st0 = "1"),
+#' match.map = list(M = list(s1 = 1, s2 = 2)),
+#' factors   = list(S = c("s1", "s2")),
+#' constants = c(st0 = 0, sd_v.false=1),
+#' responses = c("r1","r2"),
+#' type      = "norm")
+#' p.vector <- c(A=3, B=4, mean_v.true=2, mean_v.false=-1, sd_v.true=0.5, t0=.2)
+#' print_cell_p(p.vector, model)
+print_cell_p <- function(p.vector, model)
 {
   for (i in 1:dim(model)[1])
   {
     print(row.names(model)[i])
-    print(p.df.dmc(p.vector,i,model))
+    print(p.df.dmc(model, p.vector, i))
     cat("\n")
   }
 }
 
-
-p.df.dmc <- function(p.vector,cell,model,n1order=TRUE)
-# Gets parameter data frame (one row for each accumulator) for
-# a design cell (specified by name or index) with model picking
-# out the appropriate elements of par, and function transform.par
-# transforms them appropriately for model specified in model
-# Returns rows in natural (r1, r2 etc., used by simulate.dmc) or
-# "n1" order (used by likelihood.dmc)
+#' Gets Parameter Data Frame
+#'
+#' Gets parameter data frame (one row for each accumulator) for a design cell
+#' (specified by name or index) with model picking out the appropriate
+#' elements of par, and function transform.par transforms them appropriately
+#' for model specified in model.
+#'
+#' @param model a model, created by model.dmc
+#' @param p.vector a parameter vector
+#' @param cell a string indicating a design cell, e.g., \code{s1.f1.r1}
+#' @param n1order a boolean switch to use specific LBA ordering for its
+#' parameters
+#' @return  rows in natural (r1, r2 etc., used by simulate.dmc) or "n1" order
+#' (used by likelihood.dmc)
+#' @export
+#' @examples
+#' m1 <- model.dmc(
+#'   p.map     = list(a="1",v="F",z="1",d="1",sz="1",sv="1", t0="1",st0="1"),
+#'   constants = c(st0=0,d=0),
+#'   match.map = list(M=list(s1="r1",s2="r2")),
+#'   factors   = list(S=c("s1","s2"), F=c("f1", "f2")),
+#'   responses = c("r1","r2"),
+#'   type      = "rd")
+#' pVec <- c(a=1, v.f1=1, v.f2=1.5, z=0.5, sz=0.25, sv=0.2,t0=.15)
+#' p.df.dmc(m1, pVec, "s1.f1.r1", n1order=TRUE)
+p.df.dmc <- function(model, p.vector, cell, n1order=TRUE)
 {
   # Fill in non-constants
   attr(model,"all.par")[is.na(attr(model,"all.par"))] <-
     p.vector[names(attr(model,"p.vector"))]
+
   # Make parameter matrix
-  par.mat <- matrix(rep(attr(model,"all.par"),times=dim(model)[3])[model[cell,,]],
+  par.mat <- matrix(rep(attr(model,"all.par"), times=dim(model)[3])[model[cell,,]],
          byrow=TRUE,nrow=dim(model)[3])
   dimnames(par.mat) <- list(dimnames(model)[[3]],attr(model,"par.names"))
 
@@ -428,10 +482,17 @@ p.df.dmc <- function(p.vector,cell,model,n1order=TRUE)
     par.mat[,dimnames(par.mat)[[2]]=="z"] <-
       1-par.mat[,dimnames(par.mat)[[2]]=="z"]
 
-  if (!n1order)
-    transform.ddm(data.frame(par.mat),attr(model,"type.par.names")) else
-    transform.ddm(data.frame(par.mat)[attr(model,"n1.order")[cell,],],
-                  attr(model,"type.par.names"))
+  if (n1order) { par.mat <- par.mat[attr(model,"n1.order")[cell,],] }
+
+  ## For allowing the user to do data.frame operation
+  ## e.g., par.df$b <- par.df$B + par.df$A
+  ## We have to make par.mat as data.frame and out as data.frame
+  ## For simulation.dmc to aslo do data .frame operation
+  ## Note most data.frame operations are slow and consume lots of memory
+  ## One solution is to ask the user to learn data.table operations
+  out <- transform(model, data.frame(par.mat))
+  return(data.frame(out))
+
 }
 
 
@@ -500,7 +561,6 @@ p.df.dmc <- function(p.vector,cell,model,n1order=TRUE)
 simulate.dmc <- function(object, nsim=2, seed=NULL, p.vector=NULL, SSD=Inf,
   staircase=NA, TRIALS=NA, ...)
 {
-  seed <- NULL
   if (is.null(p.vector)) stop("Must supply a p.vector\n")
 
   if (check.p.vector(p.vector, object)) stop()
@@ -554,8 +614,10 @@ simulate.dmc <- function(object, nsim=2, seed=NULL, p.vector=NULL, SSD=Inf,
     }
   } else TRIALS.name <- NULL
 
+
   for (i in 1:dim(facs)[1]) if ( nsim[i]>0 ) {
-    p.df <- p.df.dmc(p.vector,i,object,n1order=FALSE)
+    ## object is a model
+    p.df <- p.df.dmc(object, p.vector, i, n1order=FALSE)
     rown <- row1 + nsim[i]-1
     data[row1:rown,c("RT","R",SSD.name,TRIALS.name)] <- switch(attr(object,"type"),
 
@@ -633,14 +695,13 @@ simulate.dmc <- function(object, nsim=2, seed=NULL, p.vector=NULL, SSD=Inf,
   return(data)
 }
 
-#' Simulate Choice-response Data for Multiple Participants
+#' Bind Data and Models
 #'
-#' Binding a data frame and a DMC model set-up. This function also check if
-#' they are compatible and adding a cell.index attribute (and many other
-#' attributes) to the data frame in order to speed likelihood computation.
+#' Binding a data frame and a DMC model description. This function also check
+#' if they are compatible and adding a \code{cell.index} and many other
+#' attributes to the data frame in order to speed likelihood computation.
 #'
-#' Slightly differring from DMC's data.model.dmc, this function add "dmc"
-#' class onto a model data instance.
+#' \code{data.model.dmc} adds a \code{dmc} class.
 #'
 #' @param data a data frame stored choice-RT data
 #' @param model a DMC model
@@ -658,7 +719,7 @@ simulate.dmc <- function(object, nsim=2, seed=NULL, p.vector=NULL, SSD=Inf,
 #' dat1 <- simulate(m1, nsim=1e2, p.vector=pVec)
 #' mdi1 <- data.model.dmc(dat1, m1)
 #' class(mdi1)
-#' ## [1] "dmc"        "data.frame"
+#' ## [1] "data.frame"        "dmc"
 data.model.dmc <- function(data, model)
 {
   # check data
@@ -698,6 +759,10 @@ data.model.dmc <- function(data, model)
       attr(data[[s]],"model") <- model
       if (is.sim) attr(data[[s]],"parameters") <- attr(dat,"parameters")[s,]
     }
+
+    ## Add multiple classes
+    attr(data, "class") <- c("list", "dmc")
+
   } else { # one subject
     # add model and index attribute to data
     cells <- apply(data[,c(fnams,"R")],1,paste,collapse=".")
@@ -709,10 +774,11 @@ data.model.dmc <- function(data, model)
     attr(data,"cell.empty") <-
       unlist(lapply(cell.index,function(x){sum(x)}))==0
     attr(data,"model") <- model
+
+    ## Add classes
+    attr(data, "class") <- c("data.frame", "dmc")
   }
 
-  ## Add multiple classes
-  attr(data, "class") <- c("dmc", "data.frame")
   return(data)
 }
 

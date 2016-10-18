@@ -22,15 +22,18 @@ pp.ggdmc <- function (samples=NA)
   return(samples)
 }
 
-ddm <- function(object=NA)
+rd <- function(object=NA)
 {
-  class(object) <- "ddm"
+  class(object) <- "rd"
   return(object)
 }
 
 lba_B <- function(object=NA)
 {
-  class(object) <- "lba_B"
+  class(object) <- "norm"
   return(object)
 }
+
+
+
 

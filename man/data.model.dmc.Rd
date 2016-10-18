@@ -2,7 +2,7 @@
 % Please edit documentation in R/dmc_model.R
 \name{data.model.dmc}
 \alias{data.model.dmc}
-\title{Simulate Choice-response Data for Multiple Participants}
+\title{Bind Data and Models}
 \usage{
 data.model.dmc(data, model)
 }
@@ -12,13 +12,12 @@ data.model.dmc(data, model)
 \item{model}{a DMC model}
 }
 \description{
-Binding a data frame and a DMC model set-up. This function also check if
-they are compatible and adding a cell.index attribute (and many other
-attributes) to the data frame in order to speed likelihood computation.
+Binding a data frame and a DMC model description. This function also check
+if they are compatible and adding a \code{cell.index} and many other
+attributes to the data frame in order to speed likelihood computation.
 }
 \details{
-Slightly differring from DMC's data.model.dmc, this function add "dmc"
-class onto a model data instance.
+\code{data.model.dmc} adds a \code{dmc} class.
 }
 \examples{
 m1 <- model.dmc(
@@ -33,6 +32,6 @@ pVec <- c(a=1,v=1, z=0.5, sz=0.25, sv=0.2,t0=.15)
 dat1 <- simulate(m1, nsim=1e2, p.vector=pVec)
 mdi1 <- data.model.dmc(dat1, m1)
 class(mdi1)
-## [1] "dmc"        "data.frame"
+## [1] "data.frame"        "dmc"
 }
 

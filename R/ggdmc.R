@@ -3,7 +3,7 @@
 #' \pkg{ggdmc} implements graphic grammar, Rcpp, and Open MPI for
 #' Andrew Heathcote's Dynamic Models of Choice (DMC), an algorithm for fitting
 #' various evidence accumulation models via differential evolution MCMC
-#' sampler.
+#' sampler. Currently, ggdmc implements only drift-diffusion model.
 #'
 #' @keywords package
 #' @name ggdmc

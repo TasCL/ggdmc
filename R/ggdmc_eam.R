@@ -1,43 +1,73 @@
 #' Transform Parameter Data Frame
 #'
-#' \code{transfrom.ddm} transforms parameters to a form suitbale for the model
-#' being used. Called inside of get.par.mat. "par.df" is a data frame of
-#' parameters types , some of which may need to be transformed, or new
-#' columns created, so that the full set of internal parameter types, specified
-#' in "type.par.names", required by the type of evidence accumulation model
-#' being used ("norm" etc.) is present.
+#' \code{transfrom} transforms parameters to a form suitbale for the model
+#' being used. The function is called inside of \code{get.par.mat}.
+#' \code{par.df} is a data frame of parameters types, some of which may need
+#' to be transformed, or new columns created, so that the full set of
+#' internal parameter types, specified in \code{type.par.names} attribute in
+#' a model data instance, required by the type of evidence accumulation model
+#' being used, such as the \code{norm} class in one of the LBA models, is
+#' present.
 #'
-#' \code{transform.lba_B} template setup for n-choice LBA,
-#' B=b-A parameterization
-#' \itemize{
-#'   \item External parameters types: A, B, t0, mean_v, sd_v, st0 = 0 (optional)
-#'   \item Internal parameters types: A, b, t0, mean_v, sd_v, st0 = 0 (optional)
+#' \code{transform.norm} template sets up for n-choice LBA, \eqn{B=b-A}
+#' parameterization
+#' \enumerate{
+#'   \item External parameters types: \code{A}, \code{B}, \code{t0},
+#'   \code{mean_v}, \code{sd_v}, \eqn{st0 = 0} (optional).
+#'   \item Internal parameters types: \code{A}, \code{b}, \code{t0},
+#'   \code{mean_v}, \code{sd_v}, \eqn{st0 = 0} (optional).
 #' }
 #'
-#' @param _data original called \code{par.df}, which is a data frame.
-#' @param type.par.names default is NULL
+#' @param mdi a model data instance
+#' @param par.df a data frame
 #' @param ... other arguments
 #' @keywords transform
 #' @export
-transform.ddm <- function( `_data`, type.par.names=NULL, ...)
+transform <- function(mdi, par.df, ...)
 {
-  # User supplied tranforms go here
-  #   par.df$b <- par.df$B+par.df$A
+  UseMethod("transform", mdi)
+}
+
+
+#' @export
+#' @rdname transform
+transform.rd <- function(mdi, par.df, ...)
+{
+
+  type.par.names <- attr(mdi, "type.par.names")
+  ## print("Use rd transform.dmc method.")
 
   #   # COMMENT OUT this check for speed after debugging
   #   if ( !all(type.par.names %in% names(par.df)) )
   #     stop("Trasform has not created parameter(s) required by the model.")
 
-  ## _data <- par.df
-  `_data`[, type.par.names]
+  ## mdi <- par.df
+  par.df[, type.par.names]
+}
+
+#' @export
+#' @rdname transform
+transform.norm <- function(mdi, par.df, ...)
+{
+  type.par.names <- attr(mdi, "type.par.names")
+
+  # User supplied tranforms go here
+  par.df$b <- par.df$B + par.df$A
+
+  # COMMENT OUT this check for speed after debugging
+  # if ( !all(type.par.names %in% names(par.df)) )
+  # stop("Trasform has not created parameter(s) required by the model.")
+  par.df[, type.par.names]
 }
 
 
 #' Calculate Log-Likelihood
 #'
-#' \code{likelihood.ddm} is a legacy function for computing diffusion
+#' \code{likelihood.rd} is a legacy function for computing diffusion
 #' model density. If the speed of computation is a concern, the user may want to
 #' use \code{ddmc}, which implemnts a streamlined C++ diffusion model density.
+#'
+#' \code{likelihood.norm} calculates LBA probability density.
 #'
 #' The precision for computing DDM density is usually set in range of 2
 #' (fast but less accruate) to 3 (slower but more accurate). The default is
@@ -45,15 +75,30 @@ transform.ddm <- function( `_data`, type.par.names=NULL, ...)
 #' arge samples. Set \coce{precision) (for DDM) or \code{ok.types} (for LBA) by
 #' sending them via ... arguments.
 #'
-#' @param p.vector a parameter vector
 #' @param data a model data instance
+#' @param p.vector a parameter vector
 #' @param min.like minimal likelihood, 1e-10
 #' @param ... other parameters, such as \emph{precision} for \code{ddm},
 #' \emph{ok.types} for \code{lba_B}.
 #' @keywords likelihood
 #' @return a vector of likelihoods for each RT in data (in same order)
 #' @export
-likelihood.ddm <- function(p.vector, data, min.like=1e-10, ...)
+likelihood <- function(data, p.vector, min.like=1e-10, ...)
+{
+  UseMethod("likelihood", data)
+}
+
+#' @rdname likelihood
+#' @export
+likelihood.default <- function(data, p.vector, min.like=1e-10, ...)
+{
+  print("Call likelihood default.")
+}
+
+
+#' @rdname likelihood
+#' @export
+likelihood.rd <- function(data,  p.vector, min.like=1e-10, ...)
 {
   precision <- 2.5
   bad <- function(p)
@@ -100,25 +145,9 @@ likelihood.ddm <- function(p.vector, data, min.like=1e-10, ...)
   pmax(likelihood, min.like)
 }
 
+#' @rdname likelihood
 #' @export
-#' @rdname transform.ddm
-transform.lba_B <- function(`_data`, type.par.names=NULL, ...)
-{
-  par.df <- `_data`
-  # User supplied tranforms go here
-  par.df$b <- par.df$B+par.df$A
-
-  # COMMENT OUT this check for speed after debugging
-  # if ( !all(type.par.names %in% names(par.df)) )
-  # stop("Trasform has not created parameter(s) required by the model.")
-  par.df[,type.par.names]
-}
-
-
-#' @export
-#' @rdname likelihood.ddm
-likelihood.lba_B <- function(p.vector, data, min.like=1e-10, ... )
-
+likelihood.norm <- function(data, p.vector, min.like=1e-10, ... )
   # !!! TO DO: types other than norm
 {
   ok.types <- c("norm")
