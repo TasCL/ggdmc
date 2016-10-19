@@ -97,7 +97,7 @@ plot_dist <- function(x, xlim=c(0, Inf), ylim=c(0, Inf), main=NULL,
 plot.pp.ggdmc <- function(x, style="pdf", gpvar1=NULL, mode="mode",
   size = 18, legPos = c(.85,.85), legKeyS=unit(2, "lines"),
   legKeyW=unit(1, "cm"), xlim=c(0, Inf), ... ) {
-  nlty <- length(unique(d$mode))
+  nlty <- length(unique(x$mode))
   gp1line1 <- aes_string(color="R", linetype=mode)
 
   if(style == "both") {
@@ -133,8 +133,8 @@ plot.pp.ggdmc <- function(x, style="pdf", gpvar1=NULL, mode="mode",
       geom_line (mapping=gp1line1,  size=.7) +
       scale_color_grey(start=.1, end=.5) +
       scale_linetype_manual(values=1:nlty) +
-      scale_y_continuous(name = yname ) +
-      scale_x_continuous(name = xname) +
+      scale_y_continuous(name = "RT" ) +
+      scale_x_continuous(name = "Density") +
       theme(legend.direction="horizontal",
             legend.position =legPos)
     print(p0 + facets)

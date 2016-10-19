@@ -107,7 +107,7 @@ The DMC R codes are developed by [Andrew Heathcote](http://www.tascl.org/andrew-
 
 ## License
 
-GPL-2 
+GPL-2. Please see License.md for details.
 
 ## Acknowledgments
 
