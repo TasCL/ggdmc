@@ -1,18 +1,18 @@
 # DMC with Graphic Grammar, Parallel Computing and C++ Capabilities
 
-ggdmc implements hierarchical Bayesian model of evidence accumulation 
-model (EAM). This release includes drift-diffusion model (Ratcliff, 1978).  
+ggdmc implements hierarchical Bayesian, evidence accumulation 
+model (HB-EAM). This release includes drift-diffusion model (Ratcliff, 1978).  
 This DDM implements Voss, Rothermund, and Voss's (2004) equations based on 
 their fast-dm 30.2 C functions as C++ functions. 
 
 ggdmc is derived from Andrew Heathcote's Dynamiuc Model of Choice (DMC), 
-which has also implemented numerous other EAMs.  Similar to DMC, ggdmc uses 
+which has also implemented numerous other EAMs.  Identical to DMC, ggdmc uses 
 differential evolution Markov Chain Monte Carlo sampler to search optimal 
-theta and phi that maximise posterior likelihood. See NEWS for new features
+theta and phi that maximise posterior likelihood. 
 
 ## Quick Getting Started
 Below shows a simple example extract from Andrew Heathcote's DMC workshop 
-materials. For further details, 
+materials. For further details, please see R help pages in this package. 
 
 ```
 require(ggdmc) 
@@ -38,15 +38,17 @@ p.prior <- prior.p.dmc(
 ## Assume a true DDM parameter vector
 p.vector <- c(a=1, v=1, z=.5, sz=.25, sv=0.2,t0=.15)
 
-## Use simulate function to simulate choice-RT data based on a
+## Use simulate function to simulate choice-RT data 
+## One usually would like to fit his/her own empirical data.
 dat1 <- simulate(m1, nsim=1e2, p.vector=p.vector)
 
-## Set up a data model instace. This bind the data with the model set-up
+## Set up a data model instace. This binds the empirical/simulated data with 
+## the model set-up
 mdi1 <- data.model.dmc(dat1, m1)
 
 ## Initialise a small sample 
-## (1) iteration # == 250 
-## (2) thin length == 1
+## (1) iteration number == 250 
+## (2) thinning length == 1
 ## (3) prior distributions are listed in p.prior 
 ## (4) data == mdi1, an assumed model and a simulated/empirical data frame
 samples0 <- samples.dmc(nmc=250, p.prior=p.prior, data=mdi1, thin=1)
@@ -75,6 +77,7 @@ plot(samples0)  ## Check traceplot to see the fit
 ?run.dmc
 ?plot.dmc
 
+
 ```
 
 
@@ -85,7 +88,8 @@ plot(samples0)  ## Check traceplot to see the fit
  ggthemes (>= 3.0.1),  snowfall (>= 1.84.6-1), stats (>= 3.2.2), 
  hypergeo (>= 1.2-13), pracma (>= 1.8.8), statmod (>= 1.4.24), loo (>= 0.1.6) 
  - coda (>= 0.16-1)
-
+ - Windows users need RTools, and perhaps Microsoft Visual C++, too.
+ - OS X user may need to install Open MPI library
 
 ### Installing
 
