@@ -1,17 +1,17 @@
 # DMC with Graphic Grammar, Parallel Computing and C++ Capabilities
 
-ggdmc implements hierarchical Bayesian, evidence accumulation 
-model (HB-EAM). This release includes drift-diffusion model (Ratcliff, 1978).  
-This DDM implements Voss, Rothermund, and Voss's (2004) equations based on 
-their fast-dm 30.2 C functions as C++ functions. 
+ggdmc implements hierarchical Bayesian, evidence accumulation model (HB-EAM). 
+This release includes drift-diffusion model (Ratcliff, 1978). This DDM 
+implements Voss, Rothermund, and Voss's (2004) equations based on their 
+fast-dm 30.2 C functions as C++ functions. 
 
 ggdmc is derived from Andrew Heathcote's Dynamiuc Model of Choice (DMC), 
 which has also implemented numerous other EAMs.  Identical to DMC, ggdmc uses 
 differential evolution Markov Chain Monte Carlo sampler to search optimal 
 theta and phi that maximise posterior likelihood. 
 
-## Quick Getting Started
-Below shows a simple example extract from Andrew Heathcote's DMC workshop 
+## Getting Started
+Here is a simple example extracted from Andrew Heathcote's DMC workshop 
 materials. For further details, please see R help pages in this package. 
 
 ```
@@ -102,12 +102,15 @@ install.packages("ggdmc_0.1.3.5.tar.gz", repos = NULL, type="source")
 
 The ggdmc C++ codes are developed by [Yi-Shin Lin](http://www.tascl.org/yi-shin-lin.html). 
 
+The R codes mainly incorporated from DMC developed by [Andrew Heathcote](http://www.tascl.org/andrew-heathcote.html). 
 
-The DMC R codes are developed by [Andrew Heathcote](http://www.tascl.org/andrew-heathcote.html) 
+If there is any bug been introduced inadvertently into R codes, that probably 
+are down to the first author. Please report any bugs you may find to the first
+author. 
 
 ## License
 
-GPL-2. Please see License.md for details.
+GPL-2. Please see License.md/LICENSE for details.
 
 ## Acknowledgments
 
@@ -123,4 +126,4 @@ Francois and Doug Bates's Rcpp, and RcppArmadillo.
 algebra <http://arma.sourceforge.net/>, authored by Conrad Sanderson. 
 * DEMCMC sampler is based on the following papers, Turner & Sederberg (2012),
 Turner et al (2013) and Ter Braak (2006).
-* Thanks to Matthew Gretton's consulation about rtdists's intenal mechanism
+* Thanks to Matthew Gretton's consulation about rtdists's internal. 
