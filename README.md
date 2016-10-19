@@ -1,24 +1,18 @@
 # DMC with Graphic Grammar, Parallel Computing and C++ Capabilities
 
 ggdmc implements hierarchical Bayesian model of evidence accumulation 
-model (EAM). This release includes drift-diffusion model (Ratcliff, 1978) 
-and LBA model (Brown & Heathcote, 2008) (not completed).  This former
-replements Voss, Rothermund, and Voss's (2004) equations and their 
-fast-dm 30.2 C functions as C++ functions. 
+model (EAM). This release includes drift-diffusion model (Ratcliff, 1978).  
+This DDM implements Voss, Rothermund, and Voss's (2004) equations based on 
+their fast-dm 30.2 C functions as C++ functions. 
 
 ggdmc is derived from Andrew Heathcote's Dynamiuc Model of Choice (DMC), 
 which has also implemented numerous other EAMs.  Similar to DMC, ggdmc uses 
 differential evolution Markov Chain Monte Carlo sampler to search optimal 
 theta and phi that maximise posterior likelihood. See NEWS for new features
 
-Version 0.1.3.4 New features:
-  First relase to CRAN 
-
 ## Quick Getting Started
 Below shows a simple example extract from Andrew Heathcote's DMC workshop 
-materials. For further details, please register for his workshop. Next one will
-be in November in Boston, U.S.A. 
-
+materials. For further details, 
 
 ```
 require(ggdmc) 
@@ -91,14 +85,12 @@ plot(samples0)  ## Check traceplot to see the fit
  ggthemes (>= 3.0.1),  snowfall (>= 1.84.6-1), stats (>= 3.2.2), 
  hypergeo (>= 1.2-13), pracma (>= 1.8.8), statmod (>= 1.4.24), loo (>= 0.1.6) 
  - coda (>= 0.16-1)
- - For plotting posterior and prior density together, you would need to install
- our modifid coda package (0.18-1.3)
- 
+
 
 ### Installing
 
 ```
-install.packages("ggdmc_0.1.3.4.tar.gz", repos = NULL, type="source")
+install.packages("ggdmc_0.1.3.5.tar.gz", repos = NULL, type="source")
 
 ```
 
