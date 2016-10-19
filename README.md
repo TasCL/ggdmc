@@ -96,7 +96,12 @@ plot(samples0)  ## Check traceplot to see the fit
 ```
 install.packages("ggdmc_0.1.3.5.tar.gz", repos = NULL, type="source")
 
+### Other supporting packages for DMC (not necessary for ggdmc)
+install.packages("coda_0.18-1.3.tar.gz", repos = NULL, type="source")
+install.packages("tnorm_0.1.0.0.tar.gz", repos = NULL, type="source")
+
 ```
+
 
 ## Contributors
 
