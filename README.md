@@ -97,10 +97,14 @@ plot(samples0)  ## Check traceplot to see the fit
  (>= 2015) 
  - OS X users need to install Open MPI library
 
-Successful cases for Windows environment
-  - Microsoft Visual Studio Community 2015 Version 14.0.25421.03 Update 3) on  
-  Windows 10.
-
+Successful cases for Windows environment:
+  - Microsoft Visual Studio Community 2015 (Version 14.0.25421.03 Update 3) on  
+  Windows 10 64 bits.
+  - Microsoft Visual Studio Community 2015 (Version 14.0.24720.1 Update 1), 
+  with Rtools 3.4 on Windows 10 64 bits.
+  
+Unsuccseeful cases for Windows environments:
+  - Microsoft Blend for Visual Studio Express 2015   
 
 ### Installing
 
