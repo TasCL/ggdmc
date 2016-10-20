@@ -25,11 +25,11 @@
 #' @examples
 #' m1 <- model.dmc(
 #'     p.map     = list(a="1",v="F",z="1",d="1",sz="1",sv="F",t0="1",st0="1"),
-#'     match.map = list(M=list(s1="r1",s2="r2")),
-#'     factors=list(S=c("s1","s2"), F=c("f1","f2")),
-#'       constants = c(st0=0,d=0),
-#'       responses = c("r1","r2"),
-#'       type = "rd")
+#'     match.map = list(M=list(s1="r1", s2="r2")),
+#'     factors   = list(S=c("s1","s2"), F=c("f1","f2")),
+#'     constants = c(st0=0,d=0),
+#'     responses = c("r1","r2"),
+#'     type      = "rd")
 #' # Parameter vector names are: ( see attr(,"p.vector") )
 #' # [1] "a"     "v.f1"  "v.f2"  "z"     "sz"    "sv.f1" "sv.f2" "t0"
 #' #
@@ -95,7 +95,7 @@ getAccumulatorMatrix <- function(pVec, cell, model, n1order = TRUE) {
 #'     responses=c("r1", "r2"),
 #'     type="rd")
 #'
-#' pVec <- c(a=1,v=1, z=0.5, sz=0.25, sv=0.2,t0=.15)
+#' pVec <- c(a=1, v=1, z=.5, sz=.25, sv=.2,t0=.15)
 #'
 #' ## Set up a model-data instance
 #' raw.data <- simulate(m1, nsim=1e2, p.vector=pVec)
@@ -109,11 +109,11 @@ getAccumulatorMatrix <- function(pVec, cell, model, n1order = TRUE) {
 #' ## [16] 0.826923114 0.189952016 1.758620294 1.696875882 2.191290074
 #' ## [21] 2.666750382 ...
 #'
-#' mdi.large <- data.model.dmc(simulate(m1, nsim=5e3, p.vector=pVec), m1)
+#' mdi.large <- data.model.dmc(simulate(m1, nsim=1e4, p.vector=pVec), m1)
 #'
 #' ## d.large <- dplyr::tbl_df(mdi.large)
 #' ## d.large
-#' ## Source: local data frame [10,000 x 3]
+#' ## Source: local data frame [20,000 x 3]
 #' ##
 #' ##         S      R        RT
 #' ##    (fctr) (fctr)     (dbl)
@@ -131,12 +131,12 @@ getAccumulatorMatrix <- function(pVec, cell, model, n1order = TRUE) {
 #'
 #' system.time(den1 <- ddmc(mdi.large, pVec))
 #' ##  user  system elapsed
-#' ## 0.028   0.004   0.032
+#' ## 0.028   0.004   0.046
 #'
 #' system.time(den2 <- ddmc_parallel(mdi.large, pVec))
 #' ##  user  system elapsed
-#' ## 0.200   0.000   0.019
-#' all(den1==den2)
+#' ## 0.200   0.000   0.023
+#' all.equal(den1, den2)
 #' ## [1] TRUE
 ddmc <- function(x, pVec, precision = 2.5, minLike = 1e-10) {
     .Call('ggdmc_ddmc', PACKAGE = 'ggdmc', x, pVec, precision, minLike)

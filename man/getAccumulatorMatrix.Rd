@@ -35,11 +35,11 @@ DMC's \code{p.df.dmc}. This is a Rcpp function.
 \examples{
 m1 <- model.dmc(
     p.map     = list(a="1",v="F",z="1",d="1",sz="1",sv="F",t0="1",st0="1"),
-    match.map = list(M=list(s1="r1",s2="r2")),
-    factors=list(S=c("s1","s2"), F=c("f1","f2")),
-      constants = c(st0=0,d=0),
-      responses = c("r1","r2"),
-      type = "rd")
+    match.map = list(M=list(s1="r1", s2="r2")),
+    factors   = list(S=c("s1","s2"), F=c("f1","f2")),
+    constants = c(st0=0,d=0),
+    responses = c("r1","r2"),
+    type      = "rd")
 # Parameter vector names are: ( see attr(,"p.vector") )
 # [1] "a"     "v.f1"  "v.f2"  "z"     "sz"    "sv.f1" "sv.f2" "t0"
 #

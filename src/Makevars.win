@@ -1,0 +1,9 @@
+PKG_CPPFLAGS = -I../inst/include
+PKG_CXXFLAGS = $(SHLIB_OPENMP_CXXFLAGS)
+CXX_STD = CXX11
+## Windows specific
+PKG_LIBS = -fopenmp
+
+CXXFLAGS=-O3
+
+CXXFLAGS+=-flto -ffat-lto-objects

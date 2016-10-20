@@ -1074,17 +1074,17 @@ migrate.h <- function(use.theta,use.logprior,use.loglike,
 #' ## Population distribution
 #' pop.prior <- prior.p.dmc(
 #'   dists = rep("tnorm", 6),
-#'   p1    = c(a=2,   v=2.5, z=0.5, sz=0.3, sv=1,  t0=0.3),
-#'   p2    = c(a=0.5, v=.5,  z=0.1, sz=0.1, sv=.3, t0=0.05),
+#'   p1    = c(a=2,  v=2.5, z=.5, sz=.3, sv=1,  t0=.3),
+#'   p2    = c(a=.5, v=.5,  z=.1, sz=.1, sv=.3, t0=.05),
 #'   lower = c(0,-5, 0, 0, 0, 0),
 #'   upper = c(5, 7, 2, 2, 2, 2))
 #'
-#' dat <- h.simulate.dmc(m1, p.prior=pop.prior, n=50, ns=4)
+#' dat <- h.simulate.dmc(m1, nsim=50, p.prior=pop.prior, ns=4)
 #' mdi <- data.model.dmc(dat, m1)
 #' p.prior  <- prior.p.dmc(
 #'   dists = rep("tnorm", 6),
-#'   p1    = c(a=2,   v=2.5, z=0.5, sz=0.3, sv=1,  t0=0.3),
-#'   p2    = c(a=0.5, v=.5,  z=0.1, sz=0.1, sv=.3, t0=0.05) * 5,
+#'   p1    = c(a=2,  v=2.5, z=.5, sz=.3, sv=1,  t0=.3),
+#'   p2    = c(a=.5, v=.5,  z=.1, sz=.1, sv=.3, t0=.05) * 5,
 #'   lower = c(0,-5, 0, 0, 0, 0),
 #'   upper = c(5, 7, 2, 2, 2, 2))
 #'
@@ -1095,8 +1095,8 @@ migrate.h <- function(use.theta,use.logprior,use.loglike,
 #' ## Make a hyper-prior list
 #' mu.prior <- prior.p.dmc(
 #'   dists = rep("tnorm", 6),
-#'   p1    = c(a=2,   v=2.5, z=0.5, sz=0.3, sv=1,  t0=0.3),
-#'   p2    = c(a=0.5, v=.5,  z=0.1, sz=0.1, sv=.3, t0=0.05) * 5,
+#'   p1    = c(a=2,  v=2.5, z=.5, sz=.3, sv=1,  t0=.3),
+#'   p2    = c(a=.5, v=.5,  z=.1, sz=.1, sv=.3, t0=.05) * 5,
 #'   lower = c(0,-5, 0, 0, 0, 0),
 #'   upper = c(5, 7, 2, 2, 2, 2))
 #'

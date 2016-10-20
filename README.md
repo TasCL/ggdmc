@@ -77,6 +77,11 @@ plot(samples0)  ## Check traceplot to see the fit
 ?run.dmc
 ?plot.dmc
 
+## For hierarchical Bayesian model 
+?h.run.dmc
+?h.samples.dmc
+?plot.dmc.list
+?plot.hyper
 
 ```
 
@@ -88,14 +93,14 @@ plot(samples0)  ## Check traceplot to see the fit
  ggthemes (>= 3.0.1),  snowfall (>= 1.84.6-1), stats (>= 3.2.2), 
  hypergeo (>= 1.2-13), pracma (>= 1.8.8), statmod (>= 1.4.24), loo (>= 0.1.6) 
  - coda (>= 0.16-1)
- - Windows users need Rtools, install Open MPI library via Cygwin and 
- Microsoft Visual C++, too.
- - OS X user may need to install Open MPI library
+ - Windows users need Rtools, and Microsoft Visual C++ (its runtime libraries).
+ - OS X users need to install Open MPI library
 
 ### Installing
 
 ```
-install.packages("ggdmc_0.1.3.5.tar.gz", repos = NULL, type="source")
+From CRAN: install.packages("ggdmc")
+From source: install.packages("ggdmc_0.1.3.5.tar.gz", repos = NULL, type="source")
 
 ### Other supporting packages for DMC (not necessary for ggdmc)
 install.packages("coda_0.18-1.3.tar.gz", repos = NULL, type="source")

@@ -523,7 +523,7 @@ migrate <- function(use.theta,use.logprior,use.loglike,
 #'   upper = c(5, 7, 2, 2, 2, 2))
 #'
 #' ## parameter vector. These are the trun values simulating data
-#' p.vector <- c(a=1,v=1, z=0.5, sz=0.25, sv=0.2,t0=.15)
+#' p.vector <- c(a=1,v=1, z=.5, sz=.25, sv=.2,t0=.15)
 #' dat1 <- simulate(m1, nsim=1e2, p.vector=p.vector)
 #' mdi1 <- data.model.dmc(dat1, m1)
 #'

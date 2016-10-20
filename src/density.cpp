@@ -79,7 +79,9 @@ double integrate_parallel(double (*F)(double, std::vector<double>&),
   int N = std::max(4, (int)(width / step_width)) ; // N at lease == 4
   double step = width / N; // the width for each rectangle
   double x, out=0.0 ;
+#ifdef _OPENMP
 #pragma omp parallel for private(x) reduction(+:out)
+#endif
   for(int i=0; i<N; i++)
   {
     x = a + (i+0.5)*step ;

@@ -49,7 +49,7 @@ m1 <- model.dmc(
     responses=c("r1", "r2"),
     type="rd")
 
-pVec <- c(a=1,v=1, z=0.5, sz=0.25, sv=0.2,t0=.15)
+pVec <- c(a=1, v=1, z=.5, sz=.25, sv=.2,t0=.15)
 
 ## Set up a model-data instance
 raw.data <- simulate(m1, nsim=1e2, p.vector=pVec)
@@ -63,11 +63,11 @@ ddmc(mdi, pVec)
 ## [16] 0.826923114 0.189952016 1.758620294 1.696875882 2.191290074
 ## [21] 2.666750382 ...
 
-mdi.large <- data.model.dmc(simulate(m1, nsim=5e3, p.vector=pVec), m1)
+mdi.large <- data.model.dmc(simulate(m1, nsim=1e4, p.vector=pVec), m1)
 
 ## d.large <- dplyr::tbl_df(mdi.large)
 ## d.large
-## Source: local data frame [10,000 x 3]
+## Source: local data frame [20,000 x 3]
 ##
 ##         S      R        RT
 ##    (fctr) (fctr)     (dbl)
@@ -85,12 +85,12 @@ mdi.large <- data.model.dmc(simulate(m1, nsim=5e3, p.vector=pVec), m1)
 
 system.time(den1 <- ddmc(mdi.large, pVec))
 ##  user  system elapsed
-## 0.028   0.004   0.032
+## 0.028   0.004   0.046
 
 system.time(den2 <- ddmc_parallel(mdi.large, pVec))
 ##  user  system elapsed
-## 0.200   0.000   0.019
-all(den1==den2)
+## 0.200   0.000   0.023
+all.equal(den1, den2)
 ## [1] TRUE
 }
 \references{

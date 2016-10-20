@@ -2,7 +2,9 @@
 ^\.Rproj\.user$
 ^tests$
 ^.git$
-examples/ggdmc_3_4.RData
-examples/ggdmc_4_7_fixed.RData
-examples/ggdmc_4_7_random.RData
-examples/ggdmc_4_7_random_speed.RData
+^inst/examples/ggdmc_3_4.RData$
+^inst/examples/ggdmc_4_7_fixed.RData$
+^inst/examples/ggdmc_4_7_random.RData$
+^inst/examples/ggdmc_4_7_random_speed.RData$
+^LICENSE.md$
+cleanup
