@@ -18,9 +18,7 @@
  * exit time. Copyright (C) 2012  Andreas Voss, Jochen Voss.
  * The vectorised and parallel integration functions are created by
  * Yi-Shin Lin 2016 */
-
-#define _USE_MATH_DEFINES // For Windows users
-#include <cmath>
+#include <ggdmc.hpp>
 #include <vector>
 
 // [[Rcpp::plugins(openmp)]]

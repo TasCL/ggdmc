@@ -93,8 +93,14 @@ plot(samples0)  ## Check traceplot to see the fit
  ggthemes (>= 3.0.1),  snowfall (>= 1.84.6-1), stats (>= 3.2.2), 
  hypergeo (>= 1.2-13), pracma (>= 1.8.8), statmod (>= 1.4.24), loo (>= 0.1.6) 
  - coda (>= 0.16-1)
- - Windows users need Rtools, and Microsoft Visual C++ (its runtime libraries).
+ - Windows users need Rtools (>= 3.3.0.1959), and Microsoft Visual C++ 
+ (>= 2015) 
  - OS X users need to install Open MPI library
+
+Successful cases for Windows environment
+  - Microsoft Visual Studio Community 2015 Version 14.0.25421.03 Update 3) on  
+  Windows 10.
+
 
 ### Installing
 

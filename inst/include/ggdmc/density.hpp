@@ -1,6 +1,8 @@
 /* The is modified from the C version of the constant drift-diffusion density
  * function in fast-dm 30.2 density.c - compute the densities g- and g+ of the
  * first exit time. Copyright (C) 2012  Andreas Voss, Jochen Voss. */
+#define _USE_MATH_DEFINES // For Windows users
+#include <cmath>
 #include <vector>
 
 void set_precision (double p) ;
