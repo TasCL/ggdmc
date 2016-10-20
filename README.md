@@ -93,8 +93,8 @@ plot(samples0)  ## Check traceplot to see the fit
  ggthemes (>= 3.0.1),  snowfall (>= 1.84.6-1), stats (>= 3.2.2), 
  hypergeo (>= 1.2-13), pracma (>= 1.8.8), statmod (>= 1.4.24), loo (>= 0.1.6) 
  - coda (>= 0.16-1)
- - Windows users need Rtools (>= 3.3.0.1959), and Microsoft Visual C++ 
- (>= 2015) 
+ - Windows users need Rtools (>= 3.3.0.1959), and Microsoft Visual Studio 
+ Community (>= 2015) 
  - OS X users need to install Open MPI library
 
 Successful cases for Windows environment:
@@ -123,7 +123,7 @@ install.packages("tnorm_0.1.0.0.tar.gz", repos = NULL, type="source")
 
 The ggdmc C++ codes are developed by [Yi-Shin Lin](http://www.tascl.org/yi-shin-lin.html). 
 
-The R codes mainly incorporated from DMC developed by [Andrew Heathcote](http://www.tascl.org/andrew-heathcote.html). 
+The R codes mainly are incorporated from DMC developed by [Andrew Heathcote](http://www.tascl.org/andrew-heathcote.html). 
 
 If there is any bug been introduced inadvertently into DMC R codes, they are 
 probably errors brought in by the first author. Please report any bugs you may 
