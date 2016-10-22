@@ -18,7 +18,7 @@ materials. For further details, please see R help pages in this package.
 require(ggdmc) 
 
 ## Use a 6-parameter drift-diffusion model  
-## This only experimental factor is Stimulus type
+## The only experimental factor is Stimulus type
 m1 <- model.dmc(
   p.map     = list(a="1", v="1", z="1", d="1", sz="1", sv="1", t0="1",st0="1"),
   constants = c(st0=0, d=0),  ## Fixed st0 and d at 0
@@ -94,7 +94,7 @@ plot(samples0)  ## Check traceplot to see the fit
  hypergeo (>= 1.2-13), pracma (>= 1.8.8), statmod (>= 1.4.24), loo (>= 0.1.6) 
  - coda (>= 0.16-1)
  - Windows users need Rtools (>= 3.3.0.1959), and Microsoft Visual Studio 
- Community (>= 2015) 
+ Communit (>= 2015) 
  - OS X users need to install Open MPI library
 
 Successful cases for Windows environment:

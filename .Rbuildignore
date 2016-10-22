@@ -7,4 +7,5 @@
 ^inst/examples/ggdmc_4_7_random.RData$
 ^inst/examples/ggdmc_4_7_random_speed.RData$
 ^LICENSE.md$
+^LICENSE$
 cleanup
