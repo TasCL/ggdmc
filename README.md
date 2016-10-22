@@ -22,9 +22,9 @@ require(ggdmc)
 ## The only experimental factor is Stimulus type
 m1 <- model.dmc(
   p.map     = list(a="1", v="1", z="1", d="1", sz="1", sv="1", t0="1",st0="1"),
-  constants = c(st0=0, d=0),  ## Fixed st0 and d at 0
-  match.map = list(M = list(s1="r1", s2="r2")),
-  factors   = list(S=c("s1", "s2")),  ## This only experimental factor is 
+  constants = c(st0=0, d=0),          ## Fixed st0 and d at 0
+  match.map = list(M = list(s1 = "r1", s2 = "r2")),
+  factors   = list(S=c("s1", "s2")),  ## Two stimulus types  
   responses = c("r1","r2"),           ## Two response types
   type      = "rd")                   ## rd stands for Ratcliff's diffusion
 
@@ -70,7 +70,7 @@ gelman.diag.dmc(samples0)
 ## sv       1.24       1.48
 ## t0       1.16       1.34
 
-plot(samples0)  ## Check traceplot to see the fit
+plot(samples0)  ## Check traceplot to see if chains converged
 
 ## Further details and more arguments, please see
 ?gelman.diag.dmc
@@ -97,6 +97,8 @@ plot(samples0)  ## Check traceplot to see the fit
  - Windows users need Rtools (>= 3.3.0.1959), and Microsoft Visual Studio 
  Communit (>= 2015) 
  - OS X users need to install Open MPI library
+ - Linux/Unix users need to install Open MPI library, if it has not 
+ been installed. 
 
 Successful cases for Windows environment:
   - Microsoft Visual Studio Community 2015 (Version 14.0.25421.03 Update 3) on  
