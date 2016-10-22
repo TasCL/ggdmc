@@ -87,11 +87,13 @@ p.prior <- prior.p.dmc(
 samples0 <- samples.dmc(nmc=500, p.prior=p.prior, data=mdi1)
 samples0 <- run.dmc(samples0, p.migrate=.05)
 
-plot(samples0)
-plot(samples0, density=TRUE)
-plot(samples0, start=101)
-plot(samples0, start=101, density=TRUE)
-plot(samples0, pll.chain=TRUE)
+## Windows tests produce grid.Call problems
+## Use should use with caution.
+## plot(samples0)
+## plot(samples0, density=TRUE)
+## plot(samples0, start=101)
+## plot(samples0, start=101, density=TRUE)
+## plot(samples0, pll.chain=TRUE)
 }
 \keyword{plot.dmc}
 

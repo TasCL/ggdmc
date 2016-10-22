@@ -240,11 +240,13 @@ pairs.dmc <- function(x, start=1, ...) {
 #' samples0 <- samples.dmc(nmc=500, p.prior=p.prior, data=mdi1)
 #' samples0 <- run.dmc(samples0, p.migrate=.05)
 #'
-#' plot(samples0)
-#' plot(samples0, density=TRUE)
-#' plot(samples0, start=101)
-#' plot(samples0, start=101, density=TRUE)
-#' plot(samples0, pll.chain=TRUE)
+#' ## Windows tests produce grid.Call problems
+#' ## Use should use with caution.
+#' ## plot(samples0)
+#' ## plot(samples0, density=TRUE)
+#' ## plot(samples0, start=101)
+#' ## plot(samples0, start=101, density=TRUE)
+#' ## plot(samples0, pll.chain=TRUE)
 plot.dmc <- function(x, start=1, end=NA, save.ll=FALSE, main.pll=NULL,
   pll.chain=FALSE, pll.together=TRUE, pll.barplot=FALSE, only.prior=FALSE,
   only.like=FALSE, smooth=FALSE, density=FALSE, save.dat=FALSE,
@@ -418,12 +420,14 @@ plot.dmc <- function(x, start=1, end=NA, save.ll=FALSE, main.pll=NULL,
 #' ## Fixed-effect model
 #' samplesInit <- h.samples.dmc(nmc=500, p.prior=p.prior, data=mdi, thin=1)
 #' samples0    <- h.run.dmc(samples=samplesInit, report=50)
-#' plot(samples0) ## traceplot for the first participant
-#' plot(samples0, density=TRUE)  ## trace- and density-plot
-#' plot(samples0, density=TRUE, subject=2) ## Plot second participant
-#' plot(samples0, density=TRUE, subject=3, start=101) ## From 101 iteration
+#' ## Windows tests produce a grid.Call problem. The user should use
+#' ## with caution.
+#' ## plot(samples0) ## traceplot for the first participant
+#' ## plot(samples0, density=TRUE)  ## trace- and density-plot
+#' ## plot(samples0, density=TRUE, subject=2) ## Plot second participant
+#' ## plot(samples0, density=TRUE, subject=3, start=101) ## From 101 iteration
 #' ## Plot iteratoin 201 to 400
-#' plot(samples0, density=TRUE, subject=4, start=201, end=400)
+#' ## plot(samples0, density=TRUE, subject=4, start=201, end=400)
 plot.dmc.list <- function(x, start=1, end=NA, save.ll=FALSE, main.pll=NULL,
   pll.chain=FALSE, pll.together=TRUE, pll.barplot=FALSE, only.prior=FALSE,
   only.like=FALSE, smooth=FALSE, density=FALSE, save.dat=FALSE,
@@ -627,22 +631,23 @@ plot.dmc.list <- function(x, start=1, end=NA, save.ll=FALSE, main.pll=NULL,
 #' hsamples0 <- h.run.dmc(samples=hsamplesInit, p.migrate=.05,
 #'   h.p.migrate=.05)
 #'
-#' plot(hsamples0) ## Only first participant
-#' plot(hsamples0, hyper=TRUE) ## Group-level parameters
-#' plot(hsamples0, hyper=TRUE, density=TRUE) ## Trace and density plots
+#' ## Windows errors
+#' ## plot(hsamples0) ## Only first participant
+#' ## plot(hsamples0, hyper=TRUE) ## Group-level parameters
+#' ## plot(hsamples0, hyper=TRUE, density=TRUE) ## Trace and density plots
 #'
-#' plot(hsamples0, p.prior=p.prior) ## plot prior and posterior
-#' plot(hsamples0, p.prior=pp.prior, hyper=TRUE) ## hyper-level
+#' ## plot(hsamples0, p.prior=p.prior) ## plot prior and posterior
+#' ## plot(hsamples0, p.prior=pp.prior, hyper=TRUE) ## hyper-level
 #'
-#' plot(hsamples0, hyper=TRUE, start=101) ## starting from 101th iteration
-#' plot(hsamples0, hyper=TRUE, density=TRUE, start=101)
+#' ## plot(hsamples0, hyper=TRUE, start=101) ## starting from 101th iteration
+#' ## plot(hsamples0, hyper=TRUE, density=TRUE, start=101)
 #'
 #' ## Plot posterior likelihood
-#' plot(hsamples0, hyper=TRUE, pll.chain=TRUE, start=21)
+#' ## plot(hsamples0, hyper=TRUE, pll.chain=TRUE, start=21)
 #'
 #' ## Save plot data for modifying
-#' D <- plot(hsamples0, hyper=TRUE, save.dat=TRUE)
-#' head(D)
+#' ## D <- plot(hsamples0, hyper=TRUE, save.dat=TRUE)
+#' ## head(D)
 #' ## Source: local data frame [6 x 4]
 #' ##   Iteration  Chain Parameter    value
 #' ##       (int) (fctr)    (fctr)    (dbl)

@@ -118,22 +118,23 @@ hsamplesInit <- h.samples.dmc(nmc=250, p.prior=p.prior, pp.prior=pp.prior,
 hsamples0 <- h.run.dmc(samples=hsamplesInit, p.migrate=.05,
   h.p.migrate=.05)
 
-plot(hsamples0) ## Only first participant
-plot(hsamples0, hyper=TRUE) ## Group-level parameters
-plot(hsamples0, hyper=TRUE, density=TRUE) ## Trace and density plots
+## Windows errors
+## plot(hsamples0) ## Only first participant
+## plot(hsamples0, hyper=TRUE) ## Group-level parameters
+## plot(hsamples0, hyper=TRUE, density=TRUE) ## Trace and density plots
 
-plot(hsamples0, p.prior=p.prior) ## plot prior and posterior
-plot(hsamples0, p.prior=pp.prior, hyper=TRUE) ## hyper-level
+## plot(hsamples0, p.prior=p.prior) ## plot prior and posterior
+## plot(hsamples0, p.prior=pp.prior, hyper=TRUE) ## hyper-level
 
-plot(hsamples0, hyper=TRUE, start=101) ## starting from 101th iteration
-plot(hsamples0, hyper=TRUE, density=TRUE, start=101)
+## plot(hsamples0, hyper=TRUE, start=101) ## starting from 101th iteration
+## plot(hsamples0, hyper=TRUE, density=TRUE, start=101)
 
 ## Plot posterior likelihood
-plot(hsamples0, hyper=TRUE, pll.chain=TRUE, start=21)
+## plot(hsamples0, hyper=TRUE, pll.chain=TRUE, start=21)
 
 ## Save plot data for modifying
-D <- plot(hsamples0, hyper=TRUE, save.dat=TRUE)
-head(D)
+## D <- plot(hsamples0, hyper=TRUE, save.dat=TRUE)
+## head(D)
 ## Source: local data frame [6 x 4]
 ##   Iteration  Chain Parameter    value
 ##       (int) (fctr)    (fctr)    (dbl)

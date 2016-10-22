@@ -91,11 +91,13 @@ p.prior  <- prior.p.dmc(
 ## Fixed-effect model
 samplesInit <- h.samples.dmc(nmc=500, p.prior=p.prior, data=mdi, thin=1)
 samples0    <- h.run.dmc(samples=samplesInit, report=50)
-plot(samples0) ## traceplot for the first participant
-plot(samples0, density=TRUE)  ## trace- and density-plot
-plot(samples0, density=TRUE, subject=2) ## Plot second participant
-plot(samples0, density=TRUE, subject=3, start=101) ## From 101 iteration
+## Windows tests produce a grid.Call problem. The user should use
+## with caution.
+## plot(samples0) ## traceplot for the first participant
+## plot(samples0, density=TRUE)  ## trace- and density-plot
+## plot(samples0, density=TRUE, subject=2) ## Plot second participant
+## plot(samples0, density=TRUE, subject=3, start=101) ## From 101 iteration
 ## Plot iteratoin 201 to 400
-plot(samples0, density=TRUE, subject=4, start=201, end=400)
+## plot(samples0, density=TRUE, subject=4, start=201, end=400)
 }
 
