@@ -1,12 +1,13 @@
 # DMC with Graphic Grammar, Parallel Computing and C++ Capabilities
 
 ggdmc implements hierarchical Bayesian, evidence accumulation model (HB-EAM). 
-This release includes drift-diffusion model (Ratcliff, 1978). This DDM 
-implements Voss, Rothermund, and Voss's (2004) equations based on their 
-fast-dm 30.2 C functions as C++ functions. 
+This release includes drift-diffusion model (Ratcliff, 1978). Based on 
+Voss, Rothermund, and Voss's (2004) fast-dm 30.2 density.c, the DDM in
+ggdmc implements the equations in their paper as C++ routines plus a new
+parallel integration function to handle high precision requirement. 
 
 ggdmc is derived from Andrew Heathcote's Dynamiuc Model of Choice (DMC), 
-which has also implemented numerous other EAMs.  Identical to DMC, ggdmc uses 
+which has also implemented other numerous EAMs.  Identical to DMC, ggdmc uses 
 differential evolution Markov Chain Monte Carlo sampler to search optimal 
 theta and phi that maximise posterior likelihood. 
 
