@@ -1,7 +1,7 @@
 #' Transform Parameter Data Frame
 #'
-#' \code{transfrom} transforms parameters to a form suitbale for the model
-#' being used. The function is called inside of \code{get.par.mat}.
+#' Transforms parameters to a form suitbale for the model been used
+#' The function is called inside of \code{get.par.mat}.
 #' \code{par.df} is a data frame of parameters types, some of which may need
 #' to be transformed, or new columns created, so that the full set of
 #' internal parameter types, specified in \code{type.par.names} attribute in
@@ -10,13 +10,12 @@
 #' present.
 #'
 #' \code{transform.norm} template sets up for n-choice LBA, \eqn{B=b-A}
-#' parameterization
-#' \enumerate{
-#'   \item External parameters types: \code{A}, \code{B}, \code{t0},
-#'   \code{mean_v}, \code{sd_v}, \eqn{st0 = 0} (optional).
-#'   \item Internal parameters types: \code{A}, \code{b}, \code{t0},
-#'   \code{mean_v}, \code{sd_v}, \eqn{st0 = 0} (optional).
-#' }
+#' parameterization.
+#'
+#' External parameters types: \code{A}, \code{B}, \code{t0}, \code{mean_v},
+#' \code{sd_v}, \eqn{st0 = 0} (optional).
+#' Internal parameters types: \code{A}, \code{b}, \code{t0}, \code{mean_v},
+#' \code{sd_v}, \eqn{st0 = 0} (optional).
 #'
 #' @param mdi a model data instance
 #' @param par.df a data frame
@@ -60,7 +59,6 @@ transform.norm <- function(mdi, par.df, ...)
   par.df[, type.par.names]
 }
 
-
 #' Calculate Log-Likelihood
 #'
 #' \code{likelihood.rd} is a legacy function for computing diffusion
@@ -97,6 +95,7 @@ likelihood.default <- function(data, p.vector, min.like=1e-10, ...)
 
 
 #' @rdname likelihood
+#' @importFrom utils glob2rx
 #' @export
 likelihood.rd <- function(data,  p.vector, min.like=1e-10, ...)
 {

@@ -4,11 +4,11 @@
 \alias{plot_dist}
 \title{Plot Cell Density}
 \usage{
-plot_dist(x, xlim = c(0, Inf), ylim = c(0, Inf), main = NULL,
+plot_dist(mdi, xlim = c(0, Inf), ylim = c(0, Inf), main = NULL,
   save.dat = FALSE, ...)
 }
 \arguments{
-\item{x}{a model data instance, a data frame class created by model.dmc}
+\item{mdi}{a model data instance, a data frame class created by model.dmc}
 
 \item{xlim}{the range on the x axis. Default is (0, Inf)}
 

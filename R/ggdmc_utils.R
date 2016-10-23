@@ -311,6 +311,8 @@ isMatOrVec <- function(n) {
 #' @param subject plot which participant. Default the 1st
 #' @param layout graphic layout. Default NA
 #' @param ... other arguments
+#' @importFrom graphics barplot par plot
+#' @importFrom stats window
 #' @export
 mcmc.list.dmc <- function(samples,hyper=FALSE,start=1,end=NA, save.ll=FALSE,
   ask=TRUE, main.pll=NULL, pll.chain=FALSE, pll.together=TRUE,
@@ -511,6 +513,7 @@ post_predict_dmc <- function(samples,n.post=100,probs=c(1:99)/100,
 #' @param save.dat whether to save simulation data to further modify data
 #' frame for plotting
 #' @importFrom ggmcmc ggs ggs_autocorrelation
+#' @importFrom stats quantile
 #' @export
 post.predict.ggdmc <- function(samples, n.post=100, probs=c(1:99)/100,
                              bw="nrd0", report=10, save.dat=FALSE)
@@ -834,6 +837,7 @@ get_os <- function()
   tolower(os)
 }
 
+#' @importFrom utils str
 checkHyper <- function(samples, n){
   hyper <- attr(samples, "hyper")
   nmc <- hyper$nmc
@@ -862,12 +866,13 @@ checkHyper <- function(samples, n){
   cat(thinChains); cat("\n")
 }
 
+#' @importFrom utils str
 checkTheta <- function(samples, n){
   if( !is.list(samples) ) {stop("I handle multiple participants only")}
   s1 <- samples[[1]]
   nmc <- samples[[1]]$nmc
-  str(s1$summed_log_prior)
-  str(s1$log_likelihoods)
+  ##str(s1$summed_log_prior)
+  ##str(s1$log_likelihoods)
   cat("theta 1 to "); cat(n, ": "); cat("\n")
   for(i in 1:n) {
     str(s1$theta[,,i])

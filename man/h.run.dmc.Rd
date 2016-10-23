@@ -74,7 +74,7 @@ pop.prior <- prior.p.dmc(
   lower = c(0,-5, 0, 0, 0, 0),
   upper = c(5, 7, 2, 2, 2, 2))
 
-dat <- h.simulate.dmc(m1, nsim=50, p.prior=pop.prior, ns=4)
+dat <- h.simulate.dmc(m1, nsim=30, p.prior=pop.prior, ns=8)
 mdi <- data.model.dmc(dat, m1)
 p.prior  <- prior.p.dmc(
   dists = rep("tnorm", 6),
@@ -84,8 +84,8 @@ p.prior  <- prior.p.dmc(
   upper = c(5, 7, 2, 2, 2, 2))
 
 ## Fixed-effect model
-samplesInit <- h.samples.dmc(nmc=100, p.prior=p.prior, data=mdi, thin=1)
-samples0    <- h.run.dmc(samples=samplesInit, report=20)
+samplesInit <- h.samples.dmc(nmc=20, p.prior=p.prior, data=mdi, thin=1)
+samples0    <- h.run.dmc(samples=samplesInit, report=10)
 
 ## Make a hyper-prior list
 mu.prior <- prior.p.dmc(
@@ -104,7 +104,7 @@ sigma.prior <- prior.p.dmc(
 pp.prior <- list(mu.prior, sigma.prior)
 
 ## Random-effect model
-hsamplesInit <- h.samples.dmc(nmc=50, p.prior=p.prior, pp.prior=pp.prior,
+hsamplesInit <- h.samples.dmc(nmc=20, p.prior=p.prior, pp.prior=pp.prior,
   data=mdi, thin=1)
 hsamples0 <- h.run.dmc(samples=hsamplesInit, report=10, p.migrate=.05,
   h.p.migrate=.05)

@@ -43,7 +43,10 @@ Rcpp::List assign_pp_pLists(Rcpp::List& samples_s1, Rcpp::List& usePhi) {
   // let usePhi follow normal order eg 0, 1, ..., 23
   // But shuffle the chain sequence
   Rcpp::IntegerVector chainSeq = Rcpp::seq_len(nChains) ; /* eg 1:24 */
-  std::random_shuffle(chainSeq.begin(), chainSeq.end()) ;
+
+  // obtain a time-based seed:
+  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+  std::shuffle(chainSeq.begin(), chainSeq.end(), std::default_random_engine(seed));
 
   for(int i =0; i<nChains; i++)   // eg 0 to 23
   {

@@ -100,16 +100,12 @@ p.prior <- prior.p.dmc(
 ## Set up multiple participant DMC sample
 samples0 <- h.samples.dmc(nmc=100, p.prior=p.prior, data=mdi, thin=1)
 
-## Run a fixed-effect fit
-## samples0 <- h.run.dmc(samples0, cores=4, report=20)
-## 20 40 60 80 100 20 40 60 80 100 20 40 60 80 100 20 40 60 80 100
-
 ## Add 400 more iterations and change thinning length to 2
-samples1 <- h.samples.dmc(nmc=400, p.prior=p.prior, samples=samples0,
+samples1 <- h.samples.dmc(nmc=100, p.prior=p.prior, samples=samples0,
 thin=2, add=TRUE)
 
 samples1[[1]]$nmc
-## [1] 500
+## [1] 200
 }
 \keyword{h.samples.dmc}
 

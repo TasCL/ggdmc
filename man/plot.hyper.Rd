@@ -4,7 +4,7 @@
 \alias{plot.hyper}
 \title{Plot DMC Samples at the Hyper level}
 \usage{
-\method{plot}{hyper}(x, hyper = FALSE, start = 1, end = NA,
+\method{plot}{hyper}(x, y = NULL, hyper = FALSE, start = 1, end = NA,
   save.ll = FALSE, main.pll = NULL, pll.chain = FALSE,
   pll.together = TRUE, pll.barplot = FALSE, only.prior = FALSE,
   only.like = FALSE, subject = 1, smooth = FALSE, density = FALSE,
@@ -13,6 +13,9 @@
 }
 \arguments{
 \item{x}{\code{run.dmc} or \code{samples.dmc} generated model samples}
+
+\item{y}{default NULL. No function. Just to make it compatible to
+\code{plot}}
 
 \item{hyper}{a boolean switch to draw hyper-parameter. By default it is off.}
 

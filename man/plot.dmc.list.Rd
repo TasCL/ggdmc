@@ -4,15 +4,18 @@
 \alias{plot.dmc.list}
 \title{Plot a DMC Sample with Multiple Participants}
 \usage{
-\method{plot}{dmc.list}(x, start = 1, end = NA, save.ll = FALSE,
-  main.pll = NULL, pll.chain = FALSE, pll.together = TRUE,
-  pll.barplot = FALSE, only.prior = FALSE, only.like = FALSE,
-  smooth = FALSE, density = FALSE, save.dat = FALSE, p.prior = NULL,
-  natural = TRUE, trans = NA, xlim = NA, chain1 = TRUE, subject = 1,
-  ...)
+\method{plot}{dmc.list}(x, y = NULL, start = 1, end = NA,
+  save.ll = FALSE, main.pll = NULL, pll.chain = FALSE,
+  pll.together = TRUE, pll.barplot = FALSE, only.prior = FALSE,
+  only.like = FALSE, smooth = FALSE, density = FALSE, save.dat = FALSE,
+  p.prior = NULL, natural = TRUE, trans = NA, xlim = NA,
+  chain1 = TRUE, subject = 1, ...)
 }
 \arguments{
 \item{x}{a \code{run.dmc} or \code{samples.dmc} generated model samples}
+
+\item{y}{default NULL. No function. Just to make it compatible to
+\code{plot}}
 
 \item{start}{instruct the function to plot starting from which iteration.
 This indicates how many burn-in interations one requests. For example,

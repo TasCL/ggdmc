@@ -88,7 +88,7 @@ par(mfrow=c(1,1));
 ## prior distributions as listed in p.prior
 ## data  == model data instance 1
 ## do not use migrate sampler (default p.migrate=0)
-samples0 <- samples.dmc(nmc=50, p.prior=p.prior, data=mdi1)
+samples0 <- samples.dmc(nmc=20, p.prior=p.prior, data=mdi1)
 samples0 <- run.dmc(samples0)
 }
 

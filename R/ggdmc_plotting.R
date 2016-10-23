@@ -3,7 +3,7 @@
 #' \code{plot.dist} plots the distributions of correct and error RTs and
 #' reports accuracy rate.
 #'
-#' @param x a model data instance, a data frame class created by model.dmc
+#' @param mdi a model data instance, a data frame class created by model.dmc
 #' @param xlim the range on the x axis. Default is (0, Inf)
 #' @param ylim the range on the y axix. Default is (0, Inf)
 #' @param main a string for the main title
@@ -25,17 +25,17 @@
 #' dat1 <- simulate(model, nsim=1e2, p.vector=pVec)
 #' mdi1 <- data.model.dmc(dat1, model)
 #' plot_dist(mdi1)
-plot_dist <- function(x, xlim=c(0, Inf), ylim=c(0, Inf), main=NULL,
+plot_dist <- function(mdi, xlim=c(0, Inf), ylim=c(0, Inf), main=NULL,
   save.dat=FALSE, ... ) {
-  ## mdi <- x
 
-  if (is.data.frame(x)) {
+  if (is.data.frame(mdi)) {
+    model <- attr(mdi, "model")
     matchMap <- attr(model, "match.map")$M
     x0 <- list()
     for(i in 1:length(matchMap)) {
       stimulus <- names(matchMap)[i]
       response <- matchMap[i]
-      tmp <- censor(x[x$S==stimulus, ], xlim=xlim)
+      tmp <- censor(mdi[mdi$S==stimulus, ], xlim=xlim)
       df0 <- density(tmp, C=response)
       df0$S <- stimulus
       x0[[i]] <- df0
@@ -50,23 +50,23 @@ plot_dist <- function(x, xlim=c(0, Inf), ylim=c(0, Inf), main=NULL,
 
   acc.C <- numeric(length(x0))
   for (i in 1:length(x0)) { acc.C[i] <- attr(x0[[i]], "accuracy") }
-  acc <- data.frame(C=acc.C, S=names(matchMap))
-  ann_data <- data.frame(x =xlim[2]*(4/5),
-    y =c(ylim[2]*3/5, ylim[2]/2),
-    lab = paste0("Accuracy (", acc[,2], ")=", round(acc[,1], 2)),
-    S = acc[,2])
-  paste0("Accuracy (", acc[,2], ")=", round(acc[,1], 2))
+  acc      <- data.frame(C=acc.C, S=names(matchMap))
+  ann_data <- data.frame(
+    xpos = xlim[2]*(4/5),
+    ypos = c(ylim[2]*3/5, ylim[2]/2),
+    lpos = paste0("Accuracy (", acc[,2], ")=", round(acc[,1], 2)),
+    S    = acc[,2])
 
   gpline <- aes_string(colour="C", linetype="S")
 
   ## facets <- facet_grid( formula(paste(". ~", "S")) )
-  p <- ggplot(x1, aes(x=x, y=y)) +
+  p <- ggplot(x1, aes_string(x="x", y="y")) +
     geom_line(mapping=gpline,  size=.7) +
     scale_y_continuous(name = "Density" ) +
     scale_x_continuous(name = "RT") +
     scale_color_grey(start=.3, end=.8) +
     coord_cartesian(ylim= c(0, ylim[2]+.05) ) +
-    geom_text(aes(x=x, y=y, label=lab), ann_data) +
+    geom_text(aes_string(x="xpos", y="ypos", label="lpos"), ann_data) +
     labs(title=main)
   if (save.dat==TRUE) {
     return(x1)
@@ -82,6 +82,8 @@ plot_dist <- function(x, xlim=c(0, Inf), ylim=c(0, Inf), main=NULL,
 #'
 #' @param x post predictive object created usually by
 #' \code{post.predict.ggdmc}.
+#' @param y default NULL. No function. Just to make it compatible to
+#' \code{plot}
 #' @param style to plot probability density, \code{pdf}, cumulative
 #' density, \code{cdf}, or \code{both}
 #' @param gpvar1 add one more experimental factor for faceting
@@ -94,7 +96,7 @@ plot_dist <- function(x, xlim=c(0, Inf), ylim=c(0, Inf), main=NULL,
 #' @param ... other arguments
 #' @export
 #' @import ggplot2
-plot.pp.ggdmc <- function(x, style="pdf", gpvar1=NULL, mode="mode",
+plot.pp.ggdmc <- function(x, y=NULL, style="pdf", gpvar1=NULL, mode="mode",
   size = 18, legPos = c(.85,.85), legKeyS=unit(2, "lines"),
   legKeyW=unit(1, "cm"), xlim=c(0, Inf), ... ) {
   nlty <- length(unique(x$mode))
@@ -185,6 +187,8 @@ pairs.dmc <- function(x, start=1, ...) {
 #' posterior log-likelihood of chains.
 #'
 #' @param x a \code{run.dmc} or \code{samples.dmc} generated model samples
+#' @param y default NULL. No function. Just to make it compatible to
+#' \code{plot}
 #' @param start instruct the function to plot starting from which iteration.
 #' This indicates how many burn-in interations one requests. For example,
 #' start=101, indicates 100 burn-in interations.
@@ -216,6 +220,7 @@ pairs.dmc <- function(x, start=1, ...) {
 #' @importFrom ggmcmc ggs ggs_density ggs_traceplot
 #' @importFrom ggthemes theme_fivethirtyeight theme_wsj
 #' @importFrom gridExtra grid.arrange
+#' @importFrom graphics barplot
 #' @examples
 #' m1 <- model.dmc(
 #'   p.map=list(a="1",v="1",z="1",d="1",sz="1",sv="1", t0="1",st0="1"),
@@ -247,11 +252,12 @@ pairs.dmc <- function(x, start=1, ...) {
 #' ## plot(samples0, start=101)
 #' ## plot(samples0, start=101, density=TRUE)
 #' ## plot(samples0, pll.chain=TRUE)
-plot.dmc <- function(x, start=1, end=NA, save.ll=FALSE, main.pll=NULL,
+plot.dmc <- function(x, y=NULL, start=1, end=NA, save.ll=FALSE, main.pll=NULL,
   pll.chain=FALSE, pll.together=TRUE, pll.barplot=FALSE, only.prior=FALSE,
   only.like=FALSE, smooth=FALSE, density=FALSE, save.dat=FALSE,
   p.prior=NULL, natural=TRUE, trans=NA, xlim=NA, chain1=TRUE, ...)
 {
+
   if ( is.na(end) ) end <- x$nmc
   if ( end <= start ) stop("End must be greater than start")
   if ( pll.chain | pll.barplot ) {
@@ -360,6 +366,8 @@ plot.dmc <- function(x, start=1, end=NA, save.ll=FALSE, main.pll=NULL,
 #' taks a sample list.
 #'
 #' @param x a \code{run.dmc} or \code{samples.dmc} generated model samples
+#' @param y default NULL. No function. Just to make it compatible to
+#' \code{plot}
 #' @param start instruct the function to plot starting from which iteration.
 #' This indicates how many burn-in interations one requests. For example,
 #' start=101, indicates 100 burn-in interations.
@@ -391,6 +399,7 @@ plot.dmc <- function(x, start=1, end=NA, save.ll=FALSE, main.pll=NULL,
 #' @importFrom ggmcmc ggs ggs_density ggs_traceplot
 #' @importFrom ggthemes theme_fivethirtyeight theme_wsj
 #' @importFrom gridExtra grid.arrange
+#' @importFrom graphics barplot
 #' @examples
 #' m1 <- model.dmc(
 #' p.map     = list(a="1",v="1",z="1",d="1",sz="1",sv="1",t0="1",st0="1"),
@@ -428,10 +437,10 @@ plot.dmc <- function(x, start=1, end=NA, save.ll=FALSE, main.pll=NULL,
 #' ## plot(samples0, density=TRUE, subject=3, start=101) ## From 101 iteration
 #' ## Plot iteratoin 201 to 400
 #' ## plot(samples0, density=TRUE, subject=4, start=201, end=400)
-plot.dmc.list <- function(x, start=1, end=NA, save.ll=FALSE, main.pll=NULL,
-  pll.chain=FALSE, pll.together=TRUE, pll.barplot=FALSE, only.prior=FALSE,
-  only.like=FALSE, smooth=FALSE, density=FALSE, save.dat=FALSE,
-  p.prior=NULL, natural=TRUE, trans=NA,
+plot.dmc.list <- function(x, y=NULL, start=1, end=NA, save.ll=FALSE,
+  main.pll=NULL, pll.chain=FALSE, pll.together=TRUE, pll.barplot=FALSE,
+  only.prior=FALSE, only.like=FALSE, smooth=FALSE, density=FALSE,
+  save.dat=FALSE, p.prior=NULL, natural=TRUE, trans=NA,
   xlim=NA, chain1=TRUE, subject=1, ...)
 {
   x <- x[[subject]]
@@ -545,6 +554,8 @@ plot.dmc.list <- function(x, start=1, end=NA, save.ll=FALSE, main.pll=NULL,
 #' a hierarchical model.
 #'
 #' @param x \code{run.dmc} or \code{samples.dmc} generated model samples
+#' @param y default NULL. No function. Just to make it compatible to
+#' \code{plot}
 #' @param hyper a boolean switch to draw hyper-parameter. By default it is off.
 #' @param start instruct the function to plot starting from which iteration.
 #' This indicates how many burn-in interations one requests. For example,
@@ -579,6 +590,7 @@ plot.dmc.list <- function(x, start=1, end=NA, save.ll=FALSE, main.pll=NULL,
 #' @importFrom ggmcmc ggs ggs_density ggs_traceplot
 #' @importFrom ggthemes theme_fivethirtyeight theme_wsj
 #' @importFrom gridExtra grid.arrange
+#' @importFrom graphics barplot
 #' @examples
 #' m1 <- model.dmc(
 #' p.map     = list(a="1",v="1",z="1",d="1",sz="1",sv="1",t0="1",st0="1"),
@@ -657,8 +669,8 @@ plot.dmc.list <- function(x, start=1, end=NA, save.ll=FALSE, main.pll=NULL,
 #' ## 4         4      1      a.h1 2.501221
 #' ## 5         5      1      a.h1 2.501221
 #' ## 6         6      1      a.h1 2.501221
-plot.hyper <- function(x, hyper=FALSE, start=1, end=NA, save.ll=FALSE,
-  main.pll=NULL, pll.chain=FALSE, pll.together=TRUE,
+plot.hyper <- function(x, y=NULL, hyper=FALSE, start=1, end=NA,
+  save.ll=FALSE, main.pll=NULL, pll.chain=FALSE, pll.together=TRUE,
   pll.barplot=FALSE, only.prior=FALSE, only.like=FALSE,
   subject=1, smooth=FALSE, density=FALSE, save.dat=FALSE,
   p.prior=NULL, natural=TRUE, trans=NA,
@@ -810,16 +822,3 @@ plot.hyper <- function(x, hyper=FALSE, start=1, end=NA, save.ll=FALSE,
 }
 
 
-# plot.score.dmc2 <- function(data=NULL, rnd=2, xlim=c(0,5), IQR=FALSE) {
-#   if (is.null(data))
-#     stop("Must supply the model-data instance")
-#
-#   correct <- tolower(data$S)==tolower(data$R)
-#   round(mean(correct),rnd)
-#   round(tapply(data$RT,list(correct),mean),rnd)
-#   d <- censor(data, C=correct, xlim=xlim)
-#   print( plotDen.dmc(d, gpvar1="C", xlim=xlim) )
-#
-#   if (IQR)
-#     round(tapply(data$RT,list(correct),IQR),2) # standard deviation
-# }

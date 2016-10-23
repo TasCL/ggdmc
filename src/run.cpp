@@ -22,7 +22,11 @@ private:
    * migrate=migrate_primitive, migrate.h=migrate_data, h.migrate=migrate_hyper */
   inline std::vector<int> pick_2chains (int k, Rcpp::IntegerVector chains) {
     chains.erase(chains.begin() + k) ;  // Remove current chain; ie [-k] R-C
-    std::random_shuffle(chains.begin(), chains.end());
+
+    // obtain a time-based seed:
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::shuffle(chains.begin(), chains.end(), std::default_random_engine(seed));
+
     Rcpp::IntegerVector tmp = chains[Rcpp::Range(0, 1)] ; // ie index
     std::vector<int>pickedChains(2) ;
     pickedChains[0] = tmp[0] - 1 ; // R index corrected to C index
@@ -32,11 +36,18 @@ private:
 
   inline std::vector<int> get_subchains (int nChains) {
     Rcpp::IntegerVector chainSeq = Rcpp::seq_len(nChains) ; /* eg 1:24 */
-  std::random_shuffle(chainSeq.begin(), chainSeq.end()) ;
+
+    unsigned seed1 = std::chrono::system_clock::now().time_since_epoch().count();
+    std::shuffle(chainSeq.begin(), chainSeq.end(),
+    std::default_random_engine(seed1));
+
   int nSubchains = chainSeq[0] ; // how many groups to work with; eg 3
 
   // shuffle again; lnum2; 3, 4, 9
-  std::random_shuffle(chainSeq.begin(), chainSeq.end());
+  unsigned seed2 = std::chrono::system_clock::now().time_since_epoch().count();
+  std::shuffle(chainSeq.begin(), chainSeq.end(),
+    std::default_random_engine(seed2));
+
   Rcpp::IntegerVector subchains = chainSeq[Rcpp::Range(0, nSubchains-1)] ;
   std::vector<int> out(nSubchains) ;
   std::sort(subchains.begin(), subchains.end()) ;
@@ -53,7 +64,11 @@ private:
 
   inline std::vector<int> shuffle_chains (int nChains) {
         Rcpp::IntegerVector chainSeq = Rcpp::seq_len(nChains) ; /* eg 1:24 */
-        std::random_shuffle(chainSeq.begin(), chainSeq.end()) ;
+
+        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+        std::shuffle(chainSeq.begin(), chainSeq.end(),
+          std::default_random_engine(seed));
+
         std::vector<int> out(nChains) ;
 
         // Convert to C index

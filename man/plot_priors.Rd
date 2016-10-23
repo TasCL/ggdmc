@@ -31,7 +31,7 @@ plot_priors(pop.prior)
 d <- plot_priors(pop.prior, save.dat=TRUE)
 
 require(ggplot2)
-p2 <- ggplot(d, aes(x = x, y = y)) + geom_line() +
+p2 <- ggplot(d, aes(x = xpos, y = ypos)) + geom_line() +
       facet_wrap(~gpvar, scales="free") + theme_bw(base_size =14)
 }
 \keyword{plot_priors}

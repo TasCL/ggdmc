@@ -4,13 +4,16 @@
 \alias{plot.pp.ggdmc}
 \title{Posterior Predictive Plot}
 \usage{
-\method{plot}{pp.ggdmc}(x, style = "pdf", gpvar1 = NULL, mode = "mode",
-  size = 18, legPos = c(0.85, 0.85), legKeyS = unit(2, "lines"),
-  legKeyW = unit(1, "cm"), xlim = c(0, Inf), ...)
+\method{plot}{pp.ggdmc}(x, y = NULL, style = "pdf", gpvar1 = NULL,
+  mode = "mode", size = 18, legPos = c(0.85, 0.85), legKeyS = unit(2,
+  "lines"), legKeyW = unit(1, "cm"), xlim = c(0, Inf), ...)
 }
 \arguments{
 \item{x}{post predictive object created usually by
 \code{post.predict.ggdmc}.}
+
+\item{y}{default NULL. No function. Just to make it compatible to
+\code{plot}}
 
 \item{style}{to plot probability density, \code{pdf}, cumulative
 density, \code{cdf}, or \code{both}}

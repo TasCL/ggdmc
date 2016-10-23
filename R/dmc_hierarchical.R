@@ -56,7 +56,8 @@
 #' @examples
 #' ## Set up a DDM Model, rate effect of factor F
 #' m1 <- model.dmc(
-#'  p.map     = list(a="1", v="F", z="1", d="1", sz="1", sv="1", t0="1", st0="1"),
+#'  p.map     = list(a="1", v="F", z="1", d="1", sz="1", sv="1", t0="1",
+#'  st0="1"),
 #'  match.map = list(M=list(s1="r1", s2="r2")),
 #'  factors   = list(S=c("s1","s2"), F=c("f1","f2")),
 #'  constants = c(st0=0,d=0),
@@ -89,7 +90,8 @@
 #'
 #' ## Use LBA as an example
 #' m2 <- model.dmc(
-#'       p.map     = list(A="1", B="1", mean_v="M", sd_v="M", t0="1", st0="1"),
+#'       p.map     = list(A="1", B="1", mean_v="M", sd_v="M", t0="1",
+#'       st0="1"),
 #'       match.map = list(M=list(s1=1, s2=2)),
 #'       factors   = list(S=c("s1", "s2")),
 #'       constants = c(st0= 0, sd_v.false=1),
@@ -98,7 +100,8 @@
 #'
 #' ## Population distribution
 #' p.mean  <- c(A=.4,B=.6,mean_v.true=1,mean_v.false=0,sd_v.true = .5,t0=.3)
-#' p.scale <- c(A=.1,B=.1,mean_v.true=.2,mean_v.false=.2,sd_v.true = .1,t0=.05)
+#' p.scale <- c(A=.1,B=.1,mean_v.true=.2,mean_v.false=.2,sd_v.true = .1,
+#' t0=.05)
 #' pop.prior <- prior.p.dmc(
 #'     dists = c("tnorm","tnorm","tnorm","tnorm","tnorm","tnorm"),
 #'     p1=p.mean, p2=p.scale,
@@ -500,16 +503,12 @@ add.hyper.dmc <- function(samples, pp.prior, nmc=NA, thin=NA, max.try=100,
 #' ## Set up multiple participant DMC sample
 #' samples0 <- h.samples.dmc(nmc=100, p.prior=p.prior, data=mdi, thin=1)
 #'
-#' ## Run a fixed-effect fit
-#' ## samples0 <- h.run.dmc(samples0, cores=4, report=20)
-#' ## 20 40 60 80 100 20 40 60 80 100 20 40 60 80 100 20 40 60 80 100
-#'
 #' ## Add 400 more iterations and change thinning length to 2
-#' samples1 <- h.samples.dmc(nmc=400, p.prior=p.prior, samples=samples0,
+#' samples1 <- h.samples.dmc(nmc=100, p.prior=p.prior, samples=samples0,
 #' thin=2, add=TRUE)
 #'
 #' samples1[[1]]$nmc
-#' ## [1] 500
+#' ## [1] 200
 h.samples.dmc <- function(nmc, p.prior=NULL, data=NULL, pp.prior=NULL,
                 samples=NULL, thin=1, theta1=NULL, phi1=NULL,
                 start.prior=NULL, hstart.prior=NULL, add=FALSE, rp=.001,
@@ -755,7 +754,7 @@ h.samples.dmc <- function(nmc, p.prior=NULL, data=NULL, pp.prior=NULL,
 }
 
 
-
+#' @importFrom stats runif
 h.migrate <- function(use.phi,use.logprior,use.loglike,p.prior,ps,rp,pp.prior,
                       has.sigma,has.hyper,is.constant)
   # DEMCMC migrate set, all chains, hyper level
@@ -820,7 +819,7 @@ h.migrate <- function(use.phi,use.logprior,use.loglike,p.prior,ps,rp,pp.prior,
   cbind(use.logprior,use.loglike,use.phi[[1]],use.phi[[2]])
 }
 
-
+#' @importFrom stats runif
 blocked.h.crossover <- function(k,blocks,n.pars,use.phi,use.logprior,use.loglike,
   p.prior,ps,pp.prior,rp,has.sigma,has.hyper,is.constant,
   force=FALSE,gamma.mult=2.38,h.gamma.mult=2.38)
@@ -902,7 +901,7 @@ blocked.h.crossover <- function(k,blocks,n.pars,use.phi,use.logprior,use.loglike
   temp
 }
 
-
+#' @importFrom stats runif
 crossover.h <- function(k,pars,use.theta,use.logprior,use.loglike,p.priors,data,
                         rp,gamma.mult=2.38,consts=NULL,pp.priors=NULL,force=FALSE)
   # Data level crossover wity different priors for each chain, p.priors is a list
@@ -1079,7 +1078,7 @@ migrate.h <- function(use.theta,use.logprior,use.loglike,
 #'   lower = c(0,-5, 0, 0, 0, 0),
 #'   upper = c(5, 7, 2, 2, 2, 2))
 #'
-#' dat <- h.simulate.dmc(m1, nsim=50, p.prior=pop.prior, ns=4)
+#' dat <- h.simulate.dmc(m1, nsim=30, p.prior=pop.prior, ns=8)
 #' mdi <- data.model.dmc(dat, m1)
 #' p.prior  <- prior.p.dmc(
 #'   dists = rep("tnorm", 6),
@@ -1089,8 +1088,8 @@ migrate.h <- function(use.theta,use.logprior,use.loglike,
 #'   upper = c(5, 7, 2, 2, 2, 2))
 #'
 #' ## Fixed-effect model
-#' samplesInit <- h.samples.dmc(nmc=100, p.prior=p.prior, data=mdi, thin=1)
-#' samples0    <- h.run.dmc(samples=samplesInit, report=20)
+#' samplesInit <- h.samples.dmc(nmc=20, p.prior=p.prior, data=mdi, thin=1)
+#' samples0    <- h.run.dmc(samples=samplesInit, report=10)
 #'
 #' ## Make a hyper-prior list
 #' mu.prior <- prior.p.dmc(
@@ -1109,7 +1108,7 @@ migrate.h <- function(use.theta,use.logprior,use.loglike,
 #' pp.prior <- list(mu.prior, sigma.prior)
 #'
 #' ## Random-effect model
-#' hsamplesInit <- h.samples.dmc(nmc=50, p.prior=p.prior, pp.prior=pp.prior,
+#' hsamplesInit <- h.samples.dmc(nmc=20, p.prior=p.prior, pp.prior=pp.prior,
 #'   data=mdi, thin=1)
 #' hsamples0 <- h.run.dmc(samples=hsamplesInit, report=10, p.migrate=.05,
 #'   h.p.migrate=.05)

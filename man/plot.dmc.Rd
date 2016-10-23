@@ -4,7 +4,7 @@
 \alias{plot.dmc}
 \title{Plot DMC Samples}
 \usage{
-\method{plot}{dmc}(x, start = 1, end = NA, save.ll = FALSE,
+\method{plot}{dmc}(x, y = NULL, start = 1, end = NA, save.ll = FALSE,
   main.pll = NULL, pll.chain = FALSE, pll.together = TRUE,
   pll.barplot = FALSE, only.prior = FALSE, only.like = FALSE,
   smooth = FALSE, density = FALSE, save.dat = FALSE, p.prior = NULL,
@@ -12,6 +12,9 @@
 }
 \arguments{
 \item{x}{a \code{run.dmc} or \code{samples.dmc} generated model samples}
+
+\item{y}{default NULL. No function. Just to make it compatible to
+\code{plot}}
 
 \item{start}{instruct the function to plot starting from which iteration.
 This indicates how many burn-in interations one requests. For example,

@@ -17,6 +17,7 @@
 #' @param main main title for the figure
 #' @param show.mean whether to show mean
 #' @export
+#' @importFrom graphics plot lines legend
 #' @examples
 #' m1 <- model.dmc(
 #'   p.map     = list(a="1",v="1",z="1",d="1",sz="1",sv="1", t0="1",st0="1"),
@@ -147,6 +148,7 @@ plot_cell_density <- function(data.cell, C=NA, xlim=c(0,Inf), ymax=NA,
 #' @param digits print out how many digits
 #' @param ... other graphical parameters (see par)
 #' @export
+#' @importFrom graphics plot
 #' @examples
 #' m1 <- model.dmc(
 #' p.map=list(a="1",v="1",z="1",d="1",sz="1",sv="1", t0="1",st0="1"),
@@ -234,8 +236,8 @@ profile.dmc <- function(fitted, p.name, min.p, max.p, p.vector, n.point=100,
 #'              upper=c(5, 7,  7, 1, 2, 1, 1))
 #' plot_prior("a", p.prior=pop.prior)
 #' plot_prior(2,  p.prior=pop.prior)
-plot_prior <- function(i, p.prior, xlim=NA, natural=TRUE, n.point=1e2, trans=NA,
-  main="", save.dat=FALSE, ... )
+plot_prior <- function(i, p.prior, xlim=NA, natural=TRUE, n.point=1e2,
+  trans=NA, main="", save.dat=FALSE, ... )
 {
   if (any(is.na(trans)))   ### Check 1 ###
   {trans <- ifelse(natural, attr(p.prior[[i]], "untrans"), "identity")}
@@ -276,14 +278,14 @@ plot_prior <- function(i, p.prior, xlim=NA, natural=TRUE, n.point=1e2, trans=NA,
   ## 1. call a log/identity transform function to change x value
   ## 2. call a density function for a distribution to set y (density) value
   df <- data.frame(
-    x     = do.call(trans, list(x = x)),
-    y     = do.call(paste("d", attr(p,"dist"), sep=""), p),
+    xpos  = do.call(trans, list(x = x)),
+    ypos  = do.call(paste("d", attr(p,"dist"), sep=""), p),
     gpvar = rep( names(p.prior[i]), length(x)))
 
   if (save.dat==TRUE) {
     return(df)
   } else {
-    print(ggplot(df, aes(x=x,y=y)) + geom_line() +
+    print(ggplot(df, aes_string(x="xpos", y="ypos")) + geom_line() +
       xlab("Value")+ ylab("Density") + facet_grid(.~gpvar))
   }
 }
@@ -313,14 +315,14 @@ plot_prior <- function(i, p.prior, xlim=NA, natural=TRUE, n.point=1e2, trans=NA,
 #' d <- plot_priors(pop.prior, save.dat=TRUE)
 #'
 #' require(ggplot2)
-#' p2 <- ggplot(d, aes(x = x, y = y)) + geom_line() +
+#' p2 <- ggplot(d, aes(x = xpos, y = ypos)) + geom_line() +
 #'       facet_wrap(~gpvar, scales="free") + theme_bw(base_size =14)
 plot_priors <- function(p.prior, save.dat=FALSE, ...) {
   pD <- NULL
   for(j in names(p.prior))
     invisible(pD <- rbind(pD, plot_prior(i=j, p.prior=p.prior, save.dat=TRUE)))
   if (save.dat) { return(pD) } else {
-    p0 <- ggplot(pD, aes(x = x, y = y)) +
+    p0 <- ggplot(pD, aes_string(x = "xpos", y = "ypos")) +
         geom_line() +
         xlab("")+ ylab("")+
         facet_wrap(~gpvar, scales="free")
@@ -328,7 +330,7 @@ plot_priors <- function(p.prior, save.dat=FALSE, ...) {
     }
 }
 
-
+#' @importFrom graphics par
 ppl.barplots.dmc <- function(samples,start=1,end=NA,layout=c(5,2))
   # Grid of barplots of pll for set of subjects
 {
@@ -342,6 +344,7 @@ ppl.barplots.dmc <- function(samples,start=1,end=NA,layout=c(5,2))
 
 
 # style="pdf"; layout=NULL; pos=NULL; dname="Data";mname="Model"
+#' @importFrom graphics par plot lines legend
 plot.pp.dmc <- function(pp, style="pdf",layout=NULL,pos=NULL,
                         dname="Data",mname="Model")
   # pdf or cdf of data and posterior predictive fits
@@ -452,6 +455,7 @@ plot.pp.dmc <- function(pp, style="pdf",layout=NULL,pos=NULL,
   }
 }
 
+#' @importFrom graphics hist abline legend
 plot.deviance.dmc <- function(ds=NULL,samples=NULL,digits=2,fast=TRUE,
                               main="",xlim=NA)
   ## Posterior deviance histogram
@@ -475,27 +479,10 @@ plot.deviance.dmc <- function(ds=NULL,samples=NULL,digits=2,fast=TRUE,
 }
 
 
-plot.score.dmc <- function(data=NULL, rnd=2, xlim=c(0,5), ymax=NA, IQR=FALSE)
-
-  {
-  if (is.null(data)) stop("Must supply the model-data instance")
-
-  slevs <- sort(unique(data$S))
-  rlevs <- sort(unique(data$R))
-  if (!all(tolower(slevs)==tolower(rlevs)))
-    error(paste("S levels (",paste(slevs,collapse=","),
-                ") cant be matched with R levels (",paste(slevs,collapse=","),")"))
-  correct <- tolower(data$S)==tolower(data$R)
-  print(round(mean(correct),rnd))
-  print(round(tapply(data$RT,list(correct),mean),rnd))
-  plot_cell_density(data,C=correct, xlim=xlim)
-
-  if (IQR)
-    print(round(tapply(data$RT,list(correct),IQR),2)) # standard deviation
-}
 
 ### Fixed Effects
 
+#' @importFrom graphics arrows
 plotSpar.dmc <- function(est,p.name, a.len=.05)
   # plots ordered cis for p.name, est produced by summary.dmc
 {
@@ -513,6 +500,7 @@ plotSpar.dmc <- function(est,p.name, a.len=.05)
 
 ### Hierachical
 
+#' @importFrom graphics plot
 h.profile.dmc <- function(p.name,p.num,min.p,max.p,ps,p.prior,n.point=100,
                           digits=3,ylim=NA)
   # for parameter p.name at position p.num (1 or 2) in p.prior given subject
@@ -542,7 +530,7 @@ h.profile.dmc <- function(p.name,p.num,min.p,max.p,ps,p.prior,n.point=100,
   ll[ll==max(ll)]
 }
 
-
+#' @importFrom stats cor
 cor.plausible <- function(hsamples,p.name,cv,plot=FALSE,
                           xlab="r",ylab="Density",main=p.name,
                           fun=NULL,...)

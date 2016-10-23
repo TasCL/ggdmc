@@ -4,6 +4,7 @@
 
 ######### PRIOR and POSTERIOR
 
+#' @importFrom stats dbeta
 dbeta_lu <- function(x,shape1,shape2,lower,upper,log=FALSE)
   # Used with beta prior
 {
@@ -11,31 +12,35 @@ dbeta_lu <- function(x,shape1,shape2,lower,upper,log=FALSE)
   else {dbeta((x-lower)/(upper-lower),shape1,shape2,log=log)/(upper-lower)}
 }
 
-
+#' @importFrom stats rbeta
 rbeta_lu <- function(n,shape1,shape2,lower,upper)
   # Used with beta prior
 {
   lower + rbeta(n,shape1,shape2)*(upper-lower)
 }
 
+#' @importFrom stats dgamma
 dgamma_l <- function(x,shape,scale,lower,log=FALSE)
   # Used with gamma prior
 {
   dgamma(x-lower,shape=shape,scale=scale,log=log)
 }
 
+#' @importFrom stats rgamma
 rgamma_l <- function(n,shape,scale,lower)
   # Used with gamma prior
 {
   lower + rgamma(n,shape=shape,scale=scale)
 }
 
+#' @importFrom stats dlnorm
 dlnorm_l <- function(x,meanlog,sdlog,lower,log=FALSE)
   # Used with lognormal prior
 {
   dlnorm(x-lower,meanlog,sdlog,log=log)
 }
 
+#' @importFrom stats rlnorm
 rlnorm_l <- function(n,meanlog,sdlog,lower)
   # Used with lognormal prior
 {
@@ -292,17 +297,17 @@ assign.pp <- function(pp,p.prior)
 #'
 #' ## Set up a new DMC sample with 200 iteration. The default thinning length
 #' ## is 1
-#' samples0 <- samples.dmc(nmc=200, p.prior=p.prior, data=mdi1)
+#' samples0 <- samples.dmc(nmc=50, p.prior=p.prior, data=mdi1)
 #' samples0$nmc
-#' ## [1] 200
+#' ## [1] 50
 #'
 #' ## Run a fixed-effect model with 5% chance of using migration sampler
-#' samples0 <- run.dmc(samples0, p.migrate=.05)
+#' ## samples0 <- run.dmc(samples0, p.migrate=.05)
 #'
 #' ## Add 200 more iteration on to sample0
-#' samples1 <- samples.dmc(nmc=200, p.prior=p.prior, samples=samples0, add=TRUE)
+#' samples1 <- samples.dmc(nmc=50, p.prior=p.prior, samples=samples0, add=TRUE)
 #' ## samples1$nmc
-#' ## [1] 400
+#' ## [1] 100
 samples.dmc <- function(nmc,
   p.prior      = NULL,  data         = NULL,
   thin         = 1,     samples      = NULL,
@@ -379,7 +384,7 @@ samples.dmc <- function(nmc,
   return(out)
 }
 
-
+#' @importFrom stats runif
 crossover <- function(k,pars,use.theta,use.logprior,use.loglike,p.prior,data,
                       rp,gamma.mult=2.38,force=FALSE)
   # DEMCMC crossover update of one chain, data level
@@ -551,7 +556,7 @@ migrate <- function(use.theta,use.logprior,use.loglike,
 #' ## prior distributions as listed in p.prior
 #' ## data  == model data instance 1
 #' ## do not use migrate sampler (default p.migrate=0)
-#' samples0 <- samples.dmc(nmc=50, p.prior=p.prior, data=mdi1)
+#' samples0 <- samples.dmc(nmc=20, p.prior=p.prior, data=mdi1)
 #' samples0 <- run.dmc(samples0)
 run.dmc <- function(samples, report=100, cores=1, p.migrate=0, gamma.mult=2.38,
   farjump=NA, force=FALSE, setting=NULL, verbose=FALSE, debug=FALSE)
@@ -566,31 +571,27 @@ run.dmc <- function(samples, report=100, cores=1, p.migrate=0, gamma.mult=2.38,
   ## Check 2
   if( is.null(setting) )
   {
-    setting_in <- list(p.migrate=p.migrate, h.p.migrate=0,
+    setting_in <- list(p.migrate=p.migrate,
       gamma.mult=gamma.mult, h.gamma.mult=2.38, report=report, cores=cores)
     if(verbose)
     {
       cat("R uses default setting: p.migrate="); cat(p.migrate);
       cat(", h.p.migrate=0, gamma.mult="); cat(gamma.mult);
-      cat(", h.gamma.mult=", h.p.migrate, "\n"); cat("run will use "); cat(cores);
+      cat("run will use "); cat(cores);
       cat(" CPU and report progress every "); cat(report); cat(" step \n")
     }
 
   } else {
-    isSet <- names(setting) %in% c("p.migrate","h.p.migrate","gamma.mult",
-      "h.gamma.mult","cores","report")
+    isSet <- names(setting) %in% c("p.migrate", "gamma.mult",
+      "cores","report")
     setting$p.migrate    <- ifelse(isSet[1], setting$p.migrate,    "0.05")
-    setting$h.p.migrate  <- ifelse(isSet[2], setting$h.p.migrate,  "0.05")
     setting$gamma.mult   <- ifelse(isSet[3], setting$gamma.mult,   "2.38")
-    setting$h.gamma.mult <- ifelse(isSet[4], setting$h.gamma.mult, "2.38")
     setting$cores        <- ifelse(isSet[5], setting$cores, "1")
     setting$report       <- ifelse(isSet[6], setting$report, "100")
     if(verbose)
     {
       cat("R: Using user: p.migrate = "); cat(setting$p.migrate)
-      cat(" h.p.migrate = ");  cat(setting$h.p.migrate)
       cat(" gamma.mult = ");   cat(setting$gamma.mult)
-      cat(" h.gamma.mult = "); cat(setting$h.gamma.mult)
       cat(".\nrun will use "); cat(setting$cores)
       cat(" CPU(s) and report every "); cat(setting$report);
       cat(" step.\n");
@@ -748,7 +749,7 @@ run.converge.dmc <- function(samples,nmc=NA,report=10,cores=1,gamma.mult=2.38,
   best
 }
 
-
+#' @importFrom stats quantile
 post.predict.dmc <- function(samples,n.post=100,probs=c(1:99)/100,
                              bw="nrd0",report=10,save.simulation=FALSE)
   # make list of posterior preditive density, quantiles and response p(robability)

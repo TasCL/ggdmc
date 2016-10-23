@@ -67,7 +67,8 @@ specifies the n for a particular design subject x design cell combination.
 \examples{
 ## Set up a DDM Model, rate effect of factor F
 m1 <- model.dmc(
- p.map     = list(a="1", v="F", z="1", d="1", sz="1", sv="1", t0="1", st0="1"),
+ p.map     = list(a="1", v="F", z="1", d="1", sz="1", sv="1", t0="1",
+ st0="1"),
  match.map = list(M=list(s1="r1", s2="r2")),
  factors   = list(S=c("s1","s2"), F=c("f1","f2")),
  constants = c(st0=0,d=0),
@@ -100,7 +101,8 @@ head(dat1)
 
 ## Use LBA as an example
 m2 <- model.dmc(
-      p.map     = list(A="1", B="1", mean_v="M", sd_v="M", t0="1", st0="1"),
+      p.map     = list(A="1", B="1", mean_v="M", sd_v="M", t0="1",
+      st0="1"),
       match.map = list(M=list(s1=1, s2=2)),
       factors   = list(S=c("s1", "s2")),
       constants = c(st0= 0, sd_v.false=1),
@@ -109,7 +111,8 @@ m2 <- model.dmc(
 
 ## Population distribution
 p.mean  <- c(A=.4,B=.6,mean_v.true=1,mean_v.false=0,sd_v.true = .5,t0=.3)
-p.scale <- c(A=.1,B=.1,mean_v.true=.2,mean_v.false=.2,sd_v.true = .1,t0=.05)
+p.scale <- c(A=.1,B=.1,mean_v.true=.2,mean_v.false=.2,sd_v.true = .1,
+t0=.05)
 pop.prior <- prior.p.dmc(
     dists = c("tnorm","tnorm","tnorm","tnorm","tnorm","tnorm"),
     p1=p.mean, p2=p.scale,

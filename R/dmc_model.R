@@ -373,27 +373,6 @@ model.dmc <- function(p.map, factors=list(S=c("s1","s2")),
 }
 
 
-update.model.dmc <- function(model,p.map=NULL,constants=NULL,
-  match.map=NULL,factors=NULL,responses=NULL,type=NULL,posdrift=NULL)
-# updates model with changed arguements
-{
-
-  if (is.null(p.map)) p.map <- attr(model,"p.map")
-  if (is.null(constants)) constants <- attr(model,"constants")
-  if (is.null(match.map)) match.map <-attr(model,"match.map")
-  if (is.null(factors)) factors <- attr(model,"factors")
-  if (is.null(responses)) responses <- attr(model,"responses")
-  if (is.null(type)) type <- attr(model,"type")
-  if (is.null(posdirft)) posdrift <- attr(model,"posdrift")
-  model.dmc(p.map=p.map,
-            constants=constants,
-            match.map=match.map,
-            factors=factors,
-            responses=responses,
-            type=type
-  )
-}
-
 
 # Is p.vector compatible with model?
 check.p.vector <- function(p.vector,model)

@@ -89,16 +89,16 @@ p.prior <- prior.p.dmc(
 
 ## Set up a new DMC sample with 200 iteration. The default thinning length
 ## is 1
-samples0 <- samples.dmc(nmc=200, p.prior=p.prior, data=mdi1)
+samples0 <- samples.dmc(nmc=50, p.prior=p.prior, data=mdi1)
 samples0$nmc
-## [1] 200
+## [1] 50
 
 ## Run a fixed-effect model with 5\% chance of using migration sampler
-samples0 <- run.dmc(samples0, p.migrate=.05)
+## samples0 <- run.dmc(samples0, p.migrate=.05)
 
 ## Add 200 more iteration on to sample0
-samples1 <- samples.dmc(nmc=200, p.prior=p.prior, samples=samples0, add=TRUE)
+samples1 <- samples.dmc(nmc=50, p.prior=p.prior, samples=samples0, add=TRUE)
 ## samples1$nmc
-## [1] 400
+## [1] 100
 }
 

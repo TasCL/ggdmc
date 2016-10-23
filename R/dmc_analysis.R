@@ -17,6 +17,7 @@
 #' @keywords pick.stuck
 #' @return index of stuck chains (deviaton of ll from median < -cut)
 #' @export
+#' @importFrom stats median
 pick.stuck.dmc <- function(samples, hyper=FALSE, cut=10, start=1,end=NA,
                            verbose=FALSE, digits=2)
 {
@@ -670,6 +671,7 @@ pll.dmc <- function(samples,hyper=FALSE,start=1,end=NA,prior=FALSE,like=FALSE,su
 #' @param save a save switch
 #' @param fast choose different calculation routine
 #' @keywords Dstats
+#' @importFrom stats var
 #' @export
 Dstats.ddm <- function(samples, save=FALSE, fast=TRUE) {
   if (fast) {
@@ -698,7 +700,7 @@ pd.dmc <- function(ds)
   list(Pmean=ds$meanD-ds$Dmean,Pmin=ds$meanD-ds$minD,Pvar=ds$varD/2)
 }
 
-
+#' @importFrom graphics plot abline
 posterior.lr.dmc <- function(D1,D2,main="",
                              plot=FALSE,plot.density=TRUE)
   # Aitkins posterior deviance likelihood ratio test
@@ -733,46 +735,47 @@ IC.ddm <- function(ds=NULL,samples=NULL,DIC=FALSE,fast=TRUE,use.pd=NA)
 }
 
 
-wIC.dmc <- function(ds=NULL,samples=NULL,
-                    DIC=FALSE,fast=TRUE,use.pd=NA,...)
-  # Calculate weights for a set of models
-{
+# wIC.dmc <- function(ds=NULL,samples=NULL,
+#                     DIC=FALSE,fast=TRUE,use.pd=NA,...)
+#   # Calculate weights for a set of models
+# {
+#
+#   ICs <- function(samples,DIC=FALSE,fast=TRUE,use.pd=NA)
+#     IC.dmc(samples=samples,DIC=DIC,fast=fast,use.pd=use.pd)
+#
+#   if (is.null(ds)) if (is.null(samples))
+#     stop("Must supply samples or deviance statistics")
+#   if (is.null(samples))
+#     ics <- unlist(lapply(ds,IC.dmc,DIC=DIC,fast=fast,use.pd=use.pd)) else
+#       ics <- unlist(lapply(ds,ICs,DIC=DIC,fast=fast,use.pd=use.pd))
+#     d = ics-min(ics)
+#     w = exp(-d/2)/sum(exp(-d/2))
+#     if (!is.null(names(ics))) mnams=names(ics) else
+#       mnams <- paste("M",1:length(d),sep="")
+#     print(t(matrix(c(d,w),nrow=length(d),
+#              dimnames=list(mnams,c("IC-min","w")))),...)
+# }
 
-  ICs <- function(samples,DIC=FALSE,fast=TRUE,use.pd=NA)
-    IC.dmc(samples=samples,DIC=DIC,fast=fast,use.pd=use.pd)
 
-  if (is.null(ds)) if (is.null(samples))
-    stop("Must supply samples or deviance statistics")
-  if (is.null(samples))
-    ics <- unlist(lapply(ds,IC.dmc,DIC=DIC,fast=fast,use.pd=use.pd)) else
-      ics <- unlist(lapply(ds,ICs,DIC=DIC,fast=fast,use.pd=use.pd))
-    d = ics-min(ics)
-    w = exp(-d/2)/sum(exp(-d/2))
-    if (!is.null(names(ics))) mnams=names(ics) else
-      mnams <- paste("M",1:length(d),sep="")
-    print(t(matrix(c(d,w),nrow=length(d),
-             dimnames=list(mnams,c("IC-min","w")))),...)
-}
-
-
-waic.dmc <- function(trial_log_likes,mc_se=FALSE,save=FALSE,...)
-  # Calclaute WAIC
-{
-  cat("From ggdmc\n")
-  out <- waic(matrix(trial_log_likes,ncol=dim(trial_log_likes)[3]))
-  if (mc_se) {
-    n.chains <- dim(trial_log_likes)[2]
-    waics <- vector(mode="list",length=n.chains)
-    for (i in 1:n.chains) waics[[i]] <- waic(trial_log_likes[,i,])
-    mc <- sd(unlist(lapply(waics,function(x){x$waic})))/sqrt(n.chains)
-    print(c(p=out$p_waic,se_p=out$se_p,waic=out$waic,se_waic=out$se_waic,
-      mc_se_waic=mc),...)
-  } else
-    print(c(p=out$p_waic,se_p=out$se_p,waic=out$waic,se_waic=out$se_waic),...)
-  if (save) out
-}
+# waic.dmc <- function(trial_log_likes,mc_se=FALSE,save=FALSE,...)
+#   # Calclaute WAIC
+# {
+#   cat("From ggdmc\n")
+#   out <- waic(matrix(trial_log_likes,ncol=dim(trial_log_likes)[3]))
+#   if (mc_se) {
+#     n.chains <- dim(trial_log_likes)[2]
+#     waics <- vector(mode="list",length=n.chains)
+#     for (i in 1:n.chains) waics[[i]] <- waic(trial_log_likes[,i,])
+#     mc <- sd(unlist(lapply(waics,function(x){x$waic})))/sqrt(n.chains)
+#     print(c(p=out$p_waic,se_p=out$se_p,waic=out$waic,se_waic=out$se_waic,
+#       mc_se_waic=mc),...)
+#   } else
+#     print(c(p=out$p_waic,se_p=out$se_p,waic=out$waic,se_waic=out$se_waic),...)
+#   if (save) out
+# }
 
 #' @importFrom loo loo
+#' @importFrom stats sd
 looic.dmc <- function(trial_log_likes,mc_se=FALSE,save=FALSE,...)
   # Calcuate looic
 {
@@ -829,146 +832,5 @@ p.fun.dmc <- function(samples,fun,hyper=FALSE,ptype=1)
   {
    if (!hyper) as.vector(apply(samples$theta,c(1,3),fun)) else
      as.vector(apply(attr(samples,"hyper")$phi[[ptype]],c(1,3),fun))
-}
-
-### Plausible values
-
-#' @importFrom hypergeo genhypergeo
-posteriorRho <- function(r, n, spacing=.01, kappa=1)
-  # Code provided by Dora Matzke, March 2016, from Alexander Ly
-  # Reformatted into a single funciton
-  # Defaults provide a grid with .01 resolution, kappa=1 implies uniform prior
-{
-
-  .bf10Exact <- function(n, r, kappa=1) {
-	  # Ly et al 2015
-	  # This is the exact result with symmetric beta prior on rho
-	  # with parameter alpha. If kappa = 1 then uniform prior on rho
-	  #
-	  if (n <= 2){
-		  return(1)
-	  } else if (any(is.na(r))){
-		  return(NaN)
-	  }
-	  # TODO: use which
-	  check.r <- abs(r) >= 1 # check whether |r| >= 1
-	  if (kappa >= 1 && n > 2 && check.r) {
-		  return(Inf)
-	  }
-
-	  log.hyper.term <- log(hypergeo::genhypergeo(U=c((n-1)/2, (n-1)/2),
-	                                              L=((n+2/kappa)/2), z=r^2))
-	  log.result <- log(2^(1-2/kappa))+0.5*log(pi)-lbeta(1/kappa, 1/kappa)+
-		lgamma((n+2/kappa-1)/2)-lgamma((n+2/kappa)/2)+log.hyper.term
-	  real.result <- exp(Re(log.result))
-	  return(real.result)
-  }
-
-  .jeffreysApproxH <- function(n, r, rho) {
-	  result <- ((1 - rho^(2))^(0.5*(n - 1)))/((1 - rho*r)^(n - 1 - 0.5))
-	  return(result)
-  }
-
-  .bf10JeffreysIntegrate <- function(n, r, kappa=1) {
-	# Jeffreys' test for whether a correlation is zero or not
-	# Jeffreys (1961), pp. 289-292
-	# This is the exact result, see EJ
-	##
-	if (n <= 2){
-		return(1)
-	} else if ( any(is.na(r)) ){
-		return(NaN)
-	}
-
-	# TODO: use which
-	if (n > 2 && abs(r)==1) {
-		return(Inf)
-	}
-	hyper.term <- Re(hypergeo::genhypergeo(U=c((2*n-3)/4, (2*n-1)/4), L=(n+2/kappa)/2, z=r^2))
-	log.term <- lgamma((n+2/kappa-1)/2)-lgamma((n+2/kappa)/2)-lbeta(1/kappa, 1/kappa)
-	result <- sqrt(pi)*2^(1-2/kappa)*exp(log.term)*hyper.term
-	return(result)
-}
-
-
-  # 1.0. Built-up for likelihood functions
-  .aFunction <- function(n, r, rho) {
-	  #hyper.term <- Re(hypergeo::hypergeo(((n-1)/2), ((n-1)/2), (1/2), (r*rho)^2))
-	  hyper.term <- Re(hypergeo::genhypergeo(U=c((n-1)/2, (n-1)/2), L=(1/2), z=(r*rho)^2))
-	  result <- (1-rho^2)^((n-1)/2)*hyper.term
-	  return(result)
-  }
-
-  .bFunction <- function(n, r, rho) {
-	  #hyper.term.1 <- Re(hypergeo::hypergeo((n/2), (n/2), (1/2), (r*rho)^2))
-	  #hyper.term.2 <- Re(hypergeo::hypergeo((n/2), (n/2), (-1/2), (r*rho)^2))
-	  #hyper.term.1 <- Re(hypergeo::genhypergeo(U=c(n/2, n/2), L=(1/2), z=(r*rho)^2))
-	  #hyper.term.2 <- Re(hypergeo::genhypergeo(U=c(n/2, n/2), L=(-1/2), z=(r*rho)^2))
-	  #result <- 2^(-1)*(1-rho^2)^((n-1)/2)*exp(log.term)*
-	  #	((1-2*n*(r*rho)^2)/(r*rho)*hyper.term.1-(1-(r*rho)^2)/(r*rho)*hyper.term.2)
-	  #
-	  hyper.term <- Re(hypergeo::genhypergeo(U=c(n/2, n/2), L=(3/2), z=(r*rho)^2))
-	  log.term <- 2*(lgamma(n/2)-lgamma((n-1)/2))+((n-1)/2)*log(1-rho^2)
-	  result <- 2*r*rho*exp(log.term)*hyper.term
-	  return(result)
-  }
-
-  .hFunction <- function(n, r, rho) {
-	  result <- .aFunction(n, r, rho) + .bFunction(n, r, rho)
-	  return(result)
-  }
-
-  .scaledBeta <- function(rho, alpha, beta){
-	  result <- 1/2*dbeta((rho+1)/2, alpha, beta)
-	  return(result)
-  }
-
-
-  .priorRho <- function(rho, kappa=1) {
-	  .scaledBeta(rho, 1/kappa, 1/kappa)
-  }
-
-  # Main body
-  rho <- seq(-1,1,spacing)
-  if (!is.na(r) && !r==0){
-		return(spacing/.bf10Exact(n, r, kappa)*.hFunction(n, r, rho)*.priorRho(rho, kappa))
-	} else if (!is.na(r) && r==0){
-		return(spacing/.bf10JeffreysIntegrate(n, r, kappa)*
-		         .jeffreysApproxH(n, r, rho)*.priorRho(rho, kappa))
-	}
-
-}
-
-postRav <- function(r, n, spacing=.01, kappa=1)
-  # r is a vector, returns average density.
-{
-  result <- apply(sapply(r,posteriorRho,n=n,spacing=spacing,kappa=kappa),1,mean)
-  names(result) <- seq(-1,1,spacing)
-  attr(result,"n") <- n
-  attr(result,"kappa") <- kappa
-  result
-}
-
-postRav.Density <- function(result)
-  # Produces desnity class object
-{
-  x.vals <- as.numeric(names(result))
-  result <- result/(diff(range(x.vals))/length(x.vals))
-  out <- list(x=x.vals,y=result,has.na=FALSE,
-    data.name="postRav",call=call("postRav"),
-    bw=mean(diff(x.vals)),n=attr(result,"n"))
-  class(out) <- "density"
-  out
-}
-
-postRav.mean <- function(pra) {
-  # Average value of object produced by posteriorRhoAverage
-  sum(pra*as.numeric(names(pra)))
-}
-
-postRav.p <- function(pra,lower=-1,upper=1) {
-  # probability in an (inclusive) range of posteriorRhoAverage object
-  x.vals <- as.numeric(names(pra))
-  sum(pra[x.vals <= upper & x.vals >= lower])
 }
 
