@@ -92,8 +92,8 @@ p.prior  <- prior.p.dmc(
   upper = c(5, 7, 2, 2, 2, 2))
 
 ## Fixed-effect model
-samplesInit <- h.samples.dmc(nmc=500, p.prior=p.prior, data=mdi, thin=1)
-samples0    <- h.run.dmc(samples=samplesInit, report=50)
+samplesInit <- h.samples.dmc(nmc=50, p.prior=p.prior, data=mdi, thin=1)
+samples0    <- h.run.dmc(samples=samplesInit, report=25)
 ## Windows tests produce a grid.Call problem. The user should use
 ## with caution.
 ## plot(samples0) ## traceplot for the first participant

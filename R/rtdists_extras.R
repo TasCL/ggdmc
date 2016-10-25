@@ -335,7 +335,7 @@ rexg <- function (mu,sigma,tau)
   dt <- matrix(rnorm(n=length(mu), mean=mu,sd=sigma) +
                  rexp(n=length(mu),rate=1/tau),nrow = dim(mu)[1])
   winner <- apply(dt,2,which.min)
-  data.frame(RT=dt[cbind(winner,1:dim(mu)[2])],R=winner)
+  data.frame(RT=dt[cbind(winner,1:dim(mu)[2])], R=winner)
 }
 
 

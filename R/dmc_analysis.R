@@ -187,34 +187,11 @@ phi.as.mcmc.list <- function(hyper, start=1, end=NA)
 #'
 #' pp.prior <- list(mu.prior, sigma.prior)
 #'
-#' hsamples0 <- h.samples.dmc(nmc=200, p.prior=p.prior, pp.prior=pp.prior,
+#' hsamples0 <- h.samples.dmc(nmc=50, p.prior=p.prior, pp.prior=pp.prior,
 #'   data=mdi1, thin=1)
-#' hsamples0 <- h.run.dmc(hsamples0, p.migrate=.05, h.p.migrate=.05)
+#' hsamples0 <- h.run.dmc(hsamples0)
 #' gelman.diag.dmc(hsamples0, hyper=TRUE)
-#' ## Potential scale reduction factors:
-#' ##
-#' ## Point est. Upper C.I.
-#' ## a.h1          1.08       1.14
-#' ## v.f1.h1       1.31       1.53
-#' ## v.f2.h1       1.18       1.30
-#' ## z.h1          1.16       1.29
-#' ## sz.h1         1.05       1.09
-#' ## sv.h1         1.13       1.22
-#' ## t0.h1         1.11       1.19
-#' ## a.h2          1.10       1.18
-#' ## v.f1.h2       1.06       1.10
-#' ## v.f2.h2       1.07       1.12
-#' ## z.h2          1.10       1.17
-#' ## sz.h2         1.08       1.14
-#' ## sv.h2         1.12       1.20
-#' ## t0.h2         1.10       1.18
-#' ## Multivariate psrf
-#'
 #' gelman.diag.dmc(hsamples0)
-#' ##    2    8    4    3    1    5    6    7
-#' ## 1.21 1.21 1.27 1.36 1.37 1.55 1.57 1.77
-#' ## Mean
-#' ## [1] 1.41
 gelman.diag.dmc <- function(x, hyper=FALSE, digits=2, start=1,
                             autoburnin=FALSE, transform=TRUE, end=NA, ...)
 {
@@ -274,7 +251,7 @@ gelman.diag.dmc <- function(x, hyper=FALSE, digits=2, start=1,
 #'   lower = c(0,-5, -5, 0, 0,   0, 0),
 #'   upper = c(5, 7,  7, 1, 0.5, 2, 2))
 #'
-#' dat  <- h.simulate.dmc(m1, nsim=30, ns=8, p.prior=pop.prior)
+#' dat  <- h.simulate.dmc(m1, nsim=30, ns=4, p.prior=pop.prior)
 #' mdi1 <- data.model.dmc(dat, m1)
 #' ps   <- attr(dat,  "parameters")
 #' ### FIT RANDOM EFFECTS
@@ -299,47 +276,11 @@ gelman.diag.dmc <- function(x, hyper=FALSE, digits=2, start=1,
 #'
 #' pp.prior <- list(mu.prior, sigma.prior)
 #'
-#' hsamples0 <- h.samples.dmc(nmc=200, p.prior=p.prior, pp.prior=pp.prior,
+#' hsamples0 <- h.samples.dmc(nmc=20, p.prior=p.prior, pp.prior=pp.prior,
 #'   data=mdi1, thin=1)
-#' hsamples0 <- h.run.dmc(hsamples0, p.migrate=.05, h.p.migrate=.05)
+#' hsamples0 <- h.run.dmc(hsamples0)
 #' es <- effectiveSize.dmc(hsamples0)
-#' ## $`1`
-#' ##   a v.f1 v.f2    z   sz   sv   t0
-#' ## 253  193   93  292  134  184  370
-#' ##
-#' ## $`2`
-#' ##   a v.f1 v.f2    z   sz   sv   t0
-#' ## 169   78  142  254  193  187  343
-#' ##
-#' ## $`3`
-#' ##   a v.f1 v.f2    z   sz   sv   t0
-#' ## 118   56  105  121  157  129  210
-#' ##
-#' ## $`4`
-#' ##   a v.f1 v.f2    z   sz   sv   t0
-#' ## 179   77   95  236  121  175  124
-#' ##
-#' ## $`5`
-#' ##   a v.f1 v.f2    z   sz   sv   t0
-#' ## 199   49   64  205  153  124  339
-#' ##
-#' ## $`6`
-#' ##   a v.f1 v.f2    z   sz   sv   t0
-#' ## 220   65  103  208  128  123  231
-#' ##
-#' ## $`7`
-#' ##   a v.f1 v.f2    z   sz   sv   t0
-#' ## 234   58  108  219  191  190  203
-#' ##
-#' ## $`8`
-#' ##   a v.f1 v.f2    z   sz   sv   t0
-#' ## 390   81   90  182  249  191  257
-#'
 #' hes <- effectiveSize.dmc(hsamples0, hyper=TRUE)
-#' ##   a.h1  v.f1.h1 v.f2.h1    z.h1   sz.h1   sv.h1   t0.h1    a.h2 v.f1.h2
-#' ##     130     127     134     154      81     108     172     126     100
-#' ## v.f2.h2    z.h2   sz.h2   sv.h2   t0.h2
-#' ##     118     100     153      92     123
 effectiveSize.dmc <- function(x, hyper=FALSE, digits=0,start=1,end=NA)
 {
   if (hyper) {
@@ -392,10 +333,10 @@ effectiveSize.dmc <- function(x, hyper=FALSE, digits=0,start=1,end=NA)
 #'
 #' pVec <- c(a=1,v=1, z=0.5, sz=0.25, sv=0.2,t0=.15)
 #'
-#' dat1 <- simulate(m1, nsim=1e2, p.vector=pVec)
+#' dat1 <- simulate(m1, nsim=30, p.vector=pVec)
 #' mdi1 <- data.model.dmc(dat1, m1)
 #'
-#' samples0 <- samples.dmc(nmc=500, p.prior=p.prior, data=mdi1)
+#' samples0 <- samples.dmc(nmc=100, p.prior=p.prior, data=mdi1)
 #' samples0 <- run.dmc(samples0, p.migrate=.05)
 #' gelman.diag.dmc(samples0)
 #' class(samples0)
@@ -424,17 +365,19 @@ summary.dmc <- function(object, start=1, end=NA, ... )
 #' @seealso \code{\link{summary.dmc}, \link{summary.hyper}}
 #' @export
 #' @examples
-#'
 #' m1 <- model.dmc(
-#'        p.map     = list(a="1",v="F",z="1",d="1",sz="1",sv="1",t0="1",st0="1"),
-#'        match.map = list(M=list(s1="r1",s2="r2")),
-#'        factors   = list(S=c("s1","s2"),F=c("f1","f2")),
-#'        constants = c(st0=0,d=0),
-#'        responses = c("r1","r2"),
-#'        type      = "rd")
+#'       p.map     = list(a="1",v="F",z="1",d="1",sz="1",sv="1",t0="1",
+#'                        st0="1"),
+#'       match.map = list(M=list(s1="r1",s2="r2")),
+#'       factors   = list(S=c("s1","s2"),F=c("f1","f2")),
+#'       constants = c(st0=0,d=0),
+#'       responses = c("r1","r2"),
+#'       type      = "rd")
 #'
-#' pop.mean  <- c(a=1.15, v.f1=1.25, v.f2=1.85, z=0.55, sz=0.15, sv=0.32, t0=0.25)
-#' pop.scale <-c(a=0.10, v.f1=.8,   v.f2=.5,   z=0.1,  sz=0.05, sv=0.05, t0=0.05)
+#' pop.mean  <- c(a=1.15, v.f1=1.25, v.f2=1.85, z=0.55, sz=0.15, sv=0.32,
+#'                t0=0.25)
+#' pop.scale <- c(a=0.10, v.f1=.8,   v.f2=.5,   z=0.1,  sz=0.05, sv=0.05,
+#'                t0=0.05)
 #' pop.prior <- prior.p.dmc(
 #'   dists = rep("tnorm", length(pop.mean)),
 #'   p1    = pop.mean,
@@ -442,7 +385,7 @@ summary.dmc <- function(object, start=1, end=NA, ... )
 #'   lower = c(0,-5, -5, 0, 0,   0, 0),
 #'   upper = c(5, 7,  7, 1, 0.5, 2, 2))
 #'
-#' dat  <- h.simulate.dmc(m1, nsim=30, ns=8, p.prior=pop.prior)
+#' dat  <- h.simulate.dmc(m1, nsim=30, ns=4, p.prior=pop.prior)
 #' mdi1 <- data.model.dmc(dat, m1)
 #' ps   <- attr(dat,  "parameters")
 #'
@@ -452,29 +395,14 @@ summary.dmc <- function(object, start=1, end=NA, ... )
 #'   p2=pop.scale*5,
 #'   lower=c(0,-5, -5, 0, 0, 0, 0),
 #'   upper=c(5, 7,  7, 2, 2, 2, 2))
-#'
-#' samples0 <- h.samples.dmc(nmc=100, p.prior=p.prior, data=mdi1, thin=1)
-#' samples0 <- h.run.dmc(samples0, report=20)
+#' samples0 <- h.samples.dmc(nmc=30, p.prior=p.prior, data=mdi1, thin=1)
+#' samples0 <- h.run.dmc(samples0)
 #' class(samples0)
 #' ## [1] "dmc.list"
 #' gelman.diag.dmc(samples0)
-#' ##    8    7    1    3    6    4    5    2
-#' ## 1.68 1.74 1.86 1.92 1.96 1.98 2.02 2.43
-#' ## Mean
-#' ## [1] 1.95
-#' summary(samples0)
-#' ##       a v.f1 v.f2    z   sz   sv   t0
-#' ## 1    1.59 1.12 1.94 0.67 0.33 0.67 0.23
-#' ## 2    1.46 2.62 1.65 0.57 0.32 0.69 0.28
-#' ## 3    1.38 1.02 0.92 0.56 0.35 0.64 0.22
-#' ## 4    1.43 1.24 1.62 0.57 0.38 0.70 0.28
-#' ## 5    1.35 1.68 1.24 0.48 0.31 0.54 0.24
-#' ## 6    1.47 1.07 2.71 0.55 0.34 0.57 0.19
-#' ## 7    1.40 1.13 2.24 0.52 0.43 0.67 0.23
-#' ## 8    1.68 1.79 2.05 0.65 0.38 0.68 0.16
-#' ## Mean 1.47 1.46 1.79 0.57 0.35 0.64 0.23
 #'
-#' summary.samples0 <- summary(samples0)
+#' ## summary calls theta.as.mcmc.list, which is very slow.
+#' ## summary(samples0)
 summary.dmc.list <- function(object, digits=2, start=1, end=NA, ...)
 {
   out <- lapply(object, function(x) {
@@ -521,7 +449,7 @@ summary.dmc.list <- function(object, digits=2, start=1, end=NA, ...)
 #'   lower = c(0,-5, -5, 0, 0,   0, 0),
 #'   upper = c(5, 7,  7, 1, 0.5, 2, 2))
 #'
-#' dat  <- h.simulate.dmc(m1, nsim=30, ns=8, p.prior=pop.prior)
+#' dat  <- h.simulate.dmc(m1, nsim=30, ns=4, p.prior=pop.prior)
 #' mdi1 <- data.model.dmc(dat, m1)
 #' ps   <- attr(dat,  "parameters")
 #' ### FIT RANDOM EFFECTS
@@ -546,60 +474,16 @@ summary.dmc.list <- function(object, digits=2, start=1, end=NA, ...)
 #'
 #' pp.prior <- list(mu.prior, sigma.prior)
 #'
-#' hsamples0 <- h.samples.dmc(nmc=200, p.prior=p.prior, pp.prior=pp.prior,
+#' hsamples0 <- h.samples.dmc(nmc=30, p.prior=p.prior, pp.prior=pp.prior,
 #'   data=mdi1, thin=1)
 #' hsamples0 <- h.run.dmc(hsamples0, p.migrate=.05, h.p.migrate=.05)
 #'
 #' class(hsamples0)
 #' ## [1] "hyper"
 #'
-#' summary(hsamples0)
-#' ## Iterations = 1:200
-#' ## Thinning interval = 1
-#' ## Number of chains = 21
-#' ## Sample size per chain = 200
-#' ##
-#' ## 1. Empirical mean and standard deviation for each variable,
-#' ## plus standard error of the mean:
-#' ##
-#' ##           Mean     SD Naive SE Time-series SE
-#' ## a.h1    1.1728 0.4781 0.007377        0.04151
-#' ## v.f1.h1 2.2737 1.7060 0.026324        0.15071
-#' ## v.f2.h1 1.9654 1.0858 0.016754        0.09888
-#' ## z.h1    0.4848 0.3275 0.005054        0.03275
-#' ## sz.h1   0.3164 0.1952 0.003013        0.02378
-#' ## sv.h1   0.4785 0.1814 0.002798        0.01769
-#' ## t0.h1   0.2534 0.1671 0.002578        0.01489
-#' ## a.h2    0.7267 0.4055 0.006258        0.04262
-#' ## v.f1.h2 1.0990 0.3420 0.005277        0.03714
-#' ## v.f2.h2 0.8329 0.2819 0.004350        0.02816
-#' ## z.h2    0.7673 0.5092 0.007857        0.06046
-#' ## sz.h2   0.4201 0.1735 0.002677        0.01727
-#' ## sv.h2   1.0427 0.3516 0.005426        0.03977
-#' ## t0.h2   0.2912 0.1921 0.002964        0.02008
-#' ##
-#' ## 2. Quantiles for each variable:
-#' ##
-#' ##             2.5%    25%    50%    75%  97.5%
-#' ## a.h1     0.20575 0.8726 1.1892 1.4226 2.1530
-#' ## v.f1.h1 -3.28390 1.6922 2.4203 3.2849 4.7110
-#' ## v.f2.h1 -0.66095 1.5270 2.0492 2.5424 4.3922
-#' ## z.h1     0.03883 0.2603 0.4218 0.5918 1.2787
-#' ## sz.h1    0.03091 0.1552 0.3271 0.4464 0.7030
-#' ## sv.h1    0.08784 0.3679 0.4696 0.6010 0.8265
-#' ## t0.h1    0.02915 0.1352 0.2287 0.3214 0.7357
-#' ## a.h2     0.13628 0.4108 0.6441 1.0149 1.5645
-#' ## v.f1.h2  0.33562 0.8834 1.1464 1.3299 1.7378
-#' ## v.f2.h2  0.24369 0.6600 0.8265 1.0120 1.3514
-#' ## z.h2     0.10954 0.3481 0.6890 1.1156 1.9091
-#' ## sz.h2    0.13985 0.3030 0.4053 0.5025 0.8777
-#' ## sv.h2    0.28573 0.8155 1.0124 1.3448 1.6827
-#' ## t0.h2    0.05304 0.1473 0.2531 0.3969 0.7472
-#'
-#' summary(hsamples0, hyper.means=TRUE)
-#' ##           a      v.f1      v.f2         z        sz        sv        t0
-#' ## h1 1.172753 1.9653973 0.3164101 0.2533810 1.0990106 0.7673155 1.0427178
-#' ## h2 2.273730 0.4848155 0.4784983 0.7266657 0.8329073 0.4201312 0.2912233
+#' ## summary.hyper calls phi.as.mcmc.list, which is very slow.
+#' ## summary(hsamples0)
+#' ## summary(hsamples0, hyper.means=TRUE)
 summary.hyper <- function(object, start=1, end=NA, hyper.means=FALSE, ...)
 {
   hyper <- attr(object, "hyper")
@@ -617,7 +501,8 @@ summary.hyper <- function(object, start=1, end=NA, hyper.means=FALSE, ...)
 
 ### Priors, likelihoods and model selection
 
-pll.dmc <- function(samples,hyper=FALSE,start=1,end=NA,prior=FALSE,like=FALSE,subject=NA)
+pll.dmc <- function(samples,hyper=FALSE,start=1,end=NA,prior=FALSE,
+  like=FALSE,subject=NA)
   # extracts posterior log-likelihoods
 {
   if ( hyper ) {

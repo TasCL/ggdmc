@@ -40,7 +40,7 @@ pop.prior <- prior.p.dmc(
   lower = c(0,-5, -5, 0, 0,   0, 0),
   upper = c(5, 7,  7, 1, 0.5, 2, 2))
 
-dat  <- h.simulate.dmc(m1, nsim=30, ns=8, p.prior=pop.prior)
+dat  <- h.simulate.dmc(m1, nsim=30, ns=4, p.prior=pop.prior)
 mdi1 <- data.model.dmc(dat, m1)
 ps   <- attr(dat,  "parameters")
 ### FIT RANDOM EFFECTS
@@ -65,46 +65,10 @@ sigma.prior <- prior.p.dmc(
 
 pp.prior <- list(mu.prior, sigma.prior)
 
-hsamples0 <- h.samples.dmc(nmc=200, p.prior=p.prior, pp.prior=pp.prior,
+hsamples0 <- h.samples.dmc(nmc=20, p.prior=p.prior, pp.prior=pp.prior,
   data=mdi1, thin=1)
-hsamples0 <- h.run.dmc(hsamples0, p.migrate=.05, h.p.migrate=.05)
+hsamples0 <- h.run.dmc(hsamples0)
 es <- effectiveSize.dmc(hsamples0)
-## $`1`
-##   a v.f1 v.f2    z   sz   sv   t0
-## 253  193   93  292  134  184  370
-##
-## $`2`
-##   a v.f1 v.f2    z   sz   sv   t0
-## 169   78  142  254  193  187  343
-##
-## $`3`
-##   a v.f1 v.f2    z   sz   sv   t0
-## 118   56  105  121  157  129  210
-##
-## $`4`
-##   a v.f1 v.f2    z   sz   sv   t0
-## 179   77   95  236  121  175  124
-##
-## $`5`
-##   a v.f1 v.f2    z   sz   sv   t0
-## 199   49   64  205  153  124  339
-##
-## $`6`
-##   a v.f1 v.f2    z   sz   sv   t0
-## 220   65  103  208  128  123  231
-##
-## $`7`
-##   a v.f1 v.f2    z   sz   sv   t0
-## 234   58  108  219  191  190  203
-##
-## $`8`
-##   a v.f1 v.f2    z   sz   sv   t0
-## 390   81   90  182  249  191  257
-
 hes <- effectiveSize.dmc(hsamples0, hyper=TRUE)
-##   a.h1  v.f1.h1 v.f2.h1    z.h1   sz.h1   sv.h1   t0.h1    a.h2 v.f1.h2
-##     130     127     134     154      81     108     172     126     100
-## v.f2.h2    z.h2   sz.h2   sv.h2   t0.h2
-##     118     100     153      92     123
 }
 

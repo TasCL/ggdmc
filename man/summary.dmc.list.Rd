@@ -25,17 +25,19 @@ Call coda package to summarise the model parameters in a DMC samples with
 multiple participants
 }
 \examples{
-
 m1 <- model.dmc(
-       p.map     = list(a="1",v="F",z="1",d="1",sz="1",sv="1",t0="1",st0="1"),
-       match.map = list(M=list(s1="r1",s2="r2")),
-       factors   = list(S=c("s1","s2"),F=c("f1","f2")),
-       constants = c(st0=0,d=0),
-       responses = c("r1","r2"),
-       type      = "rd")
+      p.map     = list(a="1",v="F",z="1",d="1",sz="1",sv="1",t0="1",
+                       st0="1"),
+      match.map = list(M=list(s1="r1",s2="r2")),
+      factors   = list(S=c("s1","s2"),F=c("f1","f2")),
+      constants = c(st0=0,d=0),
+      responses = c("r1","r2"),
+      type      = "rd")
 
-pop.mean  <- c(a=1.15, v.f1=1.25, v.f2=1.85, z=0.55, sz=0.15, sv=0.32, t0=0.25)
-pop.scale <-c(a=0.10, v.f1=.8,   v.f2=.5,   z=0.1,  sz=0.05, sv=0.05, t0=0.05)
+pop.mean  <- c(a=1.15, v.f1=1.25, v.f2=1.85, z=0.55, sz=0.15, sv=0.32,
+               t0=0.25)
+pop.scale <- c(a=0.10, v.f1=.8,   v.f2=.5,   z=0.1,  sz=0.05, sv=0.05,
+               t0=0.05)
 pop.prior <- prior.p.dmc(
   dists = rep("tnorm", length(pop.mean)),
   p1    = pop.mean,
@@ -43,7 +45,7 @@ pop.prior <- prior.p.dmc(
   lower = c(0,-5, -5, 0, 0,   0, 0),
   upper = c(5, 7,  7, 1, 0.5, 2, 2))
 
-dat  <- h.simulate.dmc(m1, nsim=30, ns=8, p.prior=pop.prior)
+dat  <- h.simulate.dmc(m1, nsim=30, ns=4, p.prior=pop.prior)
 mdi1 <- data.model.dmc(dat, m1)
 ps   <- attr(dat,  "parameters")
 
@@ -53,29 +55,14 @@ p.prior <- prior.p.dmc(
   p2=pop.scale*5,
   lower=c(0,-5, -5, 0, 0, 0, 0),
   upper=c(5, 7,  7, 2, 2, 2, 2))
-
-samples0 <- h.samples.dmc(nmc=100, p.prior=p.prior, data=mdi1, thin=1)
-samples0 <- h.run.dmc(samples0, report=20)
+samples0 <- h.samples.dmc(nmc=30, p.prior=p.prior, data=mdi1, thin=1)
+samples0 <- h.run.dmc(samples0)
 class(samples0)
 ## [1] "dmc.list"
 gelman.diag.dmc(samples0)
-##    8    7    1    3    6    4    5    2
-## 1.68 1.74 1.86 1.92 1.96 1.98 2.02 2.43
-## Mean
-## [1] 1.95
-summary(samples0)
-##       a v.f1 v.f2    z   sz   sv   t0
-## 1    1.59 1.12 1.94 0.67 0.33 0.67 0.23
-## 2    1.46 2.62 1.65 0.57 0.32 0.69 0.28
-## 3    1.38 1.02 0.92 0.56 0.35 0.64 0.22
-## 4    1.43 1.24 1.62 0.57 0.38 0.70 0.28
-## 5    1.35 1.68 1.24 0.48 0.31 0.54 0.24
-## 6    1.47 1.07 2.71 0.55 0.34 0.57 0.19
-## 7    1.40 1.13 2.24 0.52 0.43 0.67 0.23
-## 8    1.68 1.79 2.05 0.65 0.38 0.68 0.16
-## Mean 1.47 1.46 1.79 0.57 0.35 0.64 0.23
 
-summary.samples0 <- summary(samples0)
+## summary calls theta.as.mcmc.list, which is very slow.
+## summary(samples0)
 }
 \seealso{
 \code{\link{summary.dmc}, \link{summary.hyper}}

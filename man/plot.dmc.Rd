@@ -87,7 +87,7 @@ p.prior <- prior.p.dmc(
   lower=c(0,-5, 0, 0, 0, 0),
   upper=c(5, 7, 2, 2, 2, 2))
 
-samples0 <- samples.dmc(nmc=500, p.prior=p.prior, data=mdi1)
+samples0 <- samples.dmc(nmc=100, p.prior=p.prior, data=mdi1)
 samples0 <- run.dmc(samples0, p.migrate=.05)
 
 ## Windows tests produce grid.Call problems

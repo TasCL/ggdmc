@@ -820,8 +820,8 @@ h.migrate <- function(use.phi,use.logprior,use.loglike,p.prior,ps,rp,pp.prior,
 }
 
 #' @importFrom stats runif
-blocked.h.crossover <- function(k,blocks,n.pars,use.phi,use.logprior,use.loglike,
-  p.prior,ps,pp.prior,rp,has.sigma,has.hyper,is.constant,
+blocked.h.crossover <- function(k,blocks,n.pars,use.phi,use.logprior,
+  use.loglike, p.prior,ps,pp.prior,rp,has.sigma,has.hyper,is.constant,
   force=FALSE,gamma.mult=2.38,h.gamma.mult=2.38)
   # hyper level crossover for hypers with a sigma, as a series of blocks
 {
@@ -903,8 +903,10 @@ blocked.h.crossover <- function(k,blocks,n.pars,use.phi,use.logprior,use.loglike
 
 #' @importFrom stats runif
 crossover.h <- function(k,pars,use.theta,use.logprior,use.loglike,p.priors,data,
-                        rp,gamma.mult=2.38,consts=NULL,pp.priors=NULL,force=FALSE)
-  # Data level crossover wity different priors for each chain, p.priors is a list
+                        rp,gamma.mult=2.38,consts=NULL,pp.priors=NULL,
+  force=FALSE)
+  # Data level crossover wity different priors for each chain, p.priors is
+  # a list
 {
   # step size
   if (is.na(gamma.mult)) gamma <- runif(1,0.5,1) else

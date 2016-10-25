@@ -116,12 +116,11 @@ sigma.prior <- prior.p.dmc(
 pp.prior <- list(mu.prior, sigma.prior)
 
 ## Random-effect model
-hsamplesInit <- h.samples.dmc(nmc=250, p.prior=p.prior, pp.prior=pp.prior,
+hsamplesInit <- h.samples.dmc(nmc=50, p.prior=p.prior, pp.prior=pp.prior,
   data=mdi, thin=1)
-hsamples0 <- h.run.dmc(samples=hsamplesInit, p.migrate=.05,
-  h.p.migrate=.05)
+hsamples0 <- h.run.dmc(samples=hsamplesInit)
 
-## Windows errors
+## Windows Testing errors
 ## plot(hsamples0) ## Only first participant
 ## plot(hsamples0, hyper=TRUE) ## Group-level parameters
 ## plot(hsamples0, hyper=TRUE, density=TRUE) ## Trace and density plots

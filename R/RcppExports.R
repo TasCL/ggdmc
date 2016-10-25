@@ -129,14 +129,14 @@ getAccumulatorMatrix <- function(pVec, cell, model, n1order = TRUE) {
 #' ## 10     s1     r2 0.5011935
 #' ## ..    ...    ...       ...
 #'
-#' system.time(den1 <- ddmc(mdi.large, pVec))
+#' ## system.time(den1 <- ddmc(mdi.large, pVec))
 #' ##  user  system elapsed
 #' ## 0.028   0.004   0.046
 #'
-#' system.time(den2 <- ddmc_parallel(mdi.large, pVec))
+#' ## system.time(den2 <- ddmc_parallel(mdi.large, pVec))
 #' ##  user  system elapsed
 #' ## 0.200   0.000   0.023
-#' all.equal(den1, den2)
+#' ## all.equal(den1, den2)
 #' ## [1] TRUE
 ddmc <- function(x, pVec, precision = 2.5, minLike = 1e-10) {
     .Call('ggdmc_ddmc', PACKAGE = 'ggdmc', x, pVec, precision, minLike)

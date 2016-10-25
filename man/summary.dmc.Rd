@@ -39,10 +39,10 @@ p.prior <- prior.p.dmc(
 
 pVec <- c(a=1,v=1, z=0.5, sz=0.25, sv=0.2,t0=.15)
 
-dat1 <- simulate(m1, nsim=1e2, p.vector=pVec)
+dat1 <- simulate(m1, nsim=30, p.vector=pVec)
 mdi1 <- data.model.dmc(dat1, m1)
 
-samples0 <- samples.dmc(nmc=500, p.prior=p.prior, data=mdi1)
+samples0 <- samples.dmc(nmc=100, p.prior=p.prior, data=mdi1)
 samples0 <- run.dmc(samples0, p.migrate=.05)
 gelman.diag.dmc(samples0)
 class(samples0)

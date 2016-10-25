@@ -71,33 +71,10 @@ sigma.prior <- prior.p.dmc(
 
 pp.prior <- list(mu.prior, sigma.prior)
 
-hsamples0 <- h.samples.dmc(nmc=200, p.prior=p.prior, pp.prior=pp.prior,
+hsamples0 <- h.samples.dmc(nmc=50, p.prior=p.prior, pp.prior=pp.prior,
   data=mdi1, thin=1)
-hsamples0 <- h.run.dmc(hsamples0, p.migrate=.05, h.p.migrate=.05)
+hsamples0 <- h.run.dmc(hsamples0)
 gelman.diag.dmc(hsamples0, hyper=TRUE)
-## Potential scale reduction factors:
-##
-## Point est. Upper C.I.
-## a.h1          1.08       1.14
-## v.f1.h1       1.31       1.53
-## v.f2.h1       1.18       1.30
-## z.h1          1.16       1.29
-## sz.h1         1.05       1.09
-## sv.h1         1.13       1.22
-## t0.h1         1.11       1.19
-## a.h2          1.10       1.18
-## v.f1.h2       1.06       1.10
-## v.f2.h2       1.07       1.12
-## z.h2          1.10       1.17
-## sz.h2         1.08       1.14
-## sv.h2         1.12       1.20
-## t0.h2         1.10       1.18
-## Multivariate psrf
-
 gelman.diag.dmc(hsamples0)
-##    2    8    4    3    1    5    6    7
-## 1.21 1.21 1.27 1.36 1.37 1.55 1.57 1.77
-## Mean
-## [1] 1.41
 }
 

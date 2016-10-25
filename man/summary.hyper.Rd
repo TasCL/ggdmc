@@ -42,7 +42,7 @@ pop.prior <- prior.p.dmc(
   lower = c(0,-5, -5, 0, 0,   0, 0),
   upper = c(5, 7,  7, 1, 0.5, 2, 2))
 
-dat  <- h.simulate.dmc(m1, nsim=30, ns=8, p.prior=pop.prior)
+dat  <- h.simulate.dmc(m1, nsim=30, ns=4, p.prior=pop.prior)
 mdi1 <- data.model.dmc(dat, m1)
 ps   <- attr(dat,  "parameters")
 ### FIT RANDOM EFFECTS
@@ -67,60 +67,16 @@ sigma.prior <- prior.p.dmc(
 
 pp.prior <- list(mu.prior, sigma.prior)
 
-hsamples0 <- h.samples.dmc(nmc=200, p.prior=p.prior, pp.prior=pp.prior,
+hsamples0 <- h.samples.dmc(nmc=30, p.prior=p.prior, pp.prior=pp.prior,
   data=mdi1, thin=1)
 hsamples0 <- h.run.dmc(hsamples0, p.migrate=.05, h.p.migrate=.05)
 
 class(hsamples0)
 ## [1] "hyper"
 
-summary(hsamples0)
-## Iterations = 1:200
-## Thinning interval = 1
-## Number of chains = 21
-## Sample size per chain = 200
-##
-## 1. Empirical mean and standard deviation for each variable,
-## plus standard error of the mean:
-##
-##           Mean     SD Naive SE Time-series SE
-## a.h1    1.1728 0.4781 0.007377        0.04151
-## v.f1.h1 2.2737 1.7060 0.026324        0.15071
-## v.f2.h1 1.9654 1.0858 0.016754        0.09888
-## z.h1    0.4848 0.3275 0.005054        0.03275
-## sz.h1   0.3164 0.1952 0.003013        0.02378
-## sv.h1   0.4785 0.1814 0.002798        0.01769
-## t0.h1   0.2534 0.1671 0.002578        0.01489
-## a.h2    0.7267 0.4055 0.006258        0.04262
-## v.f1.h2 1.0990 0.3420 0.005277        0.03714
-## v.f2.h2 0.8329 0.2819 0.004350        0.02816
-## z.h2    0.7673 0.5092 0.007857        0.06046
-## sz.h2   0.4201 0.1735 0.002677        0.01727
-## sv.h2   1.0427 0.3516 0.005426        0.03977
-## t0.h2   0.2912 0.1921 0.002964        0.02008
-##
-## 2. Quantiles for each variable:
-##
-##             2.5\%    25\%    50\%    75\%  97.5\%
-## a.h1     0.20575 0.8726 1.1892 1.4226 2.1530
-## v.f1.h1 -3.28390 1.6922 2.4203 3.2849 4.7110
-## v.f2.h1 -0.66095 1.5270 2.0492 2.5424 4.3922
-## z.h1     0.03883 0.2603 0.4218 0.5918 1.2787
-## sz.h1    0.03091 0.1552 0.3271 0.4464 0.7030
-## sv.h1    0.08784 0.3679 0.4696 0.6010 0.8265
-## t0.h1    0.02915 0.1352 0.2287 0.3214 0.7357
-## a.h2     0.13628 0.4108 0.6441 1.0149 1.5645
-## v.f1.h2  0.33562 0.8834 1.1464 1.3299 1.7378
-## v.f2.h2  0.24369 0.6600 0.8265 1.0120 1.3514
-## z.h2     0.10954 0.3481 0.6890 1.1156 1.9091
-## sz.h2    0.13985 0.3030 0.4053 0.5025 0.8777
-## sv.h2    0.28573 0.8155 1.0124 1.3448 1.6827
-## t0.h2    0.05304 0.1473 0.2531 0.3969 0.7472
-
-summary(hsamples0, hyper.means=TRUE)
-##           a      v.f1      v.f2         z        sz        sv        t0
-## h1 1.172753 1.9653973 0.3164101 0.2533810 1.0990106 0.7673155 1.0427178
-## h2 2.273730 0.4848155 0.4784983 0.7266657 0.8329073 0.4201312 0.2912233
+## summary.hyper calls phi.as.mcmc.list, which is very slow.
+## summary(hsamples0)
+## summary(hsamples0, hyper.means=TRUE)
 }
 \seealso{
 \code{\link{summary.dmc}, \link{summary.dmc.list}}

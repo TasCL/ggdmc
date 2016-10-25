@@ -63,7 +63,8 @@ rconstant <- function(n,constant)
 
 #' Makes a list of prior distribution parameters.
 #'
-#' \code{prior.p.dmc} creates a list of prior distribution an array object ("model") with a set of attributes
+#' \code{prior.p.dmc} creates a list of prior distribution an array
+#' object ("model") with a set of attributes
 #' specifying a particular model and parameterization. Call \pkg{coda} to
 #' summarise the model parameters in a DMC samples with multiple participants
 #' at the hyper level.

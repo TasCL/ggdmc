@@ -51,7 +51,7 @@ p.vector <- c(a=1,v=1, z=0.5, sz=0.25, sv=0.2,t0=.15)
 dat1 <- simulate(m1, nsim=1e2, p.vector=p.vector)
 mdi1 <- data.model.dmc(dat1, m1)
 
-# Accuracy around 70\%
+## Accuracy around 70\%
 par(mfrow=c(1,2))
 plot_cell_density(data.cell=mdi1[mdi1$S=="s1", ], C="r1", xlim=c(0,2))
 plot_cell_density(data.cell=mdi1[mdi1$S=="s2", ], C="r2", xlim=c(0,2))

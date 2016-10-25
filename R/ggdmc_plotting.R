@@ -242,7 +242,7 @@ pairs.dmc <- function(x, start=1, ...) {
 #'   lower=c(0,-5, 0, 0, 0, 0),
 #'   upper=c(5, 7, 2, 2, 2, 2))
 #'
-#' samples0 <- samples.dmc(nmc=500, p.prior=p.prior, data=mdi1)
+#' samples0 <- samples.dmc(nmc=100, p.prior=p.prior, data=mdi1)
 #' samples0 <- run.dmc(samples0, p.migrate=.05)
 #'
 #' ## Windows tests produce grid.Call problems
@@ -427,8 +427,8 @@ plot.dmc <- function(x, y=NULL, start=1, end=NA, save.ll=FALSE, main.pll=NULL,
 #'   upper = c(5, 7, 2, 2, 2, 2))
 #'
 #' ## Fixed-effect model
-#' samplesInit <- h.samples.dmc(nmc=500, p.prior=p.prior, data=mdi, thin=1)
-#' samples0    <- h.run.dmc(samples=samplesInit, report=50)
+#' samplesInit <- h.samples.dmc(nmc=50, p.prior=p.prior, data=mdi, thin=1)
+#' samples0    <- h.run.dmc(samples=samplesInit, report=25)
 #' ## Windows tests produce a grid.Call problem. The user should use
 #' ## with caution.
 #' ## plot(samples0) ## traceplot for the first participant
@@ -638,12 +638,11 @@ plot.dmc.list <- function(x, y=NULL, start=1, end=NA, save.ll=FALSE,
 #' pp.prior <- list(mu.prior, sigma.prior)
 #'
 #' ## Random-effect model
-#' hsamplesInit <- h.samples.dmc(nmc=250, p.prior=p.prior, pp.prior=pp.prior,
+#' hsamplesInit <- h.samples.dmc(nmc=50, p.prior=p.prior, pp.prior=pp.prior,
 #'   data=mdi, thin=1)
-#' hsamples0 <- h.run.dmc(samples=hsamplesInit, p.migrate=.05,
-#'   h.p.migrate=.05)
+#' hsamples0 <- h.run.dmc(samples=hsamplesInit)
 #'
-#' ## Windows errors
+#' ## Windows Testing errors
 #' ## plot(hsamples0) ## Only first participant
 #' ## plot(hsamples0, hyper=TRUE) ## Group-level parameters
 #' ## plot(hsamples0, hyper=TRUE, density=TRUE) ## Trace and density plots
