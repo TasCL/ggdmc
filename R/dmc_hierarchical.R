@@ -1057,9 +1057,7 @@ migrate.h <- function(use.theta,use.logprior,use.loglike,
 #' argument
 #' @param verbose a swtich to see debugging information
 #' @keywords h.run.dmc
-#' @importFrom snow setDefaultClusterOptions
-#' @importFrom snowfall sfInit sfClusterSetupRNG sfExportAll sfLapply
-#' @importFrom parallel mclapply
+#' @importFrom parallel mclapply makeCluster parLapply stopCluster
 #' @export
 #' @examples
 #' m1 <- model.dmc(
@@ -1170,7 +1168,11 @@ h.run.dmc <- function(samples, report=100, cores=1, blocks=NA, p.migrate=0,
       if (debug==TRUE) {
         out <- run_data(samples, setting_in, debug=TRUE) ;
       } else if (cores > 1) {
-        cat("Run in parallel, using Open MP. Set cores=1 to turn off parallel\n")
+        if (verbose)
+        {
+          cat("Run in parallel, using Open MP. ")
+          cat("Set cores=1 to turn off parallel\n")
+        }
         out <- run_data_parallel(samples, setting_in) ;
       } else {
         out <- run_data(samples, setting_in) ;
@@ -1178,22 +1180,16 @@ h.run.dmc <- function(samples, report=100, cores=1, blocks=NA, p.migrate=0,
       dimnames(out$theta) <- list(NULL, out$p.names, NULL)
     } else {                    ## fixed-effect for multiple subjects
       if (os == "windows" & cores > 1) {
-      ## if (os == "linux" & cores > 1) { ## For testing snow & snowfall
-        sfInit(parallel=TRUE, cpus=cores, type="SOCK")
-        sfClusterSetupRNG()
-        sfExportAll()
-
-        out <- snowfall::sfLapply(samples, run_data, setting_in);
-        snowfall::sfStop()
+      ## if (os == "linux" & cores > 1) { ## Testing SOCK
+        cl <- makeCluster(cores)
+        out <- parLapply(cl, samples, run_data, setting_in)
+        stopCluster(cl)
         for(i in 1:length(out)) {
           dimnames(out[[i]]$theta) <- list(NULL, out[[i]]$p.names, NULL)
         }
 
       } else if (cores > 1) {
-        ## require(parallel, quietly=TRUE)
-        if (verbose) { cat("Use parallel package\n") }
-
-        out <- parallel::mclapply(samples, run_data, setting_in, mc.cores=cores)
+        out <- mclapply(samples, run_data, setting_in, mc.cores=cores)
         for(i in 1:length(out)) {
           dimnames(out[[i]]$theta) <- list(NULL, out[[i]]$p.names, NULL)
         }
@@ -1209,7 +1205,7 @@ h.run.dmc <- function(samples, report=100, cores=1, blocks=NA, p.migrate=0,
     ## random-effect
   } else if (!is.null(attr(samples, "hyper"))) {
     if (verbose) { cat("Run random-effect fit\n") }
-    if (cores > 1) {
+    if (cores > 1) { ## run OMP
       out <- run_hyper_parallel(samples, setting_in)
     } else {
       out <- run_hyper(samples, setting_in)

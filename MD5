@@ -1,5 +1,5 @@
 4860c49f385f2908efa588ca1b7fbdef *cleanup
-989ed27ce5a4d43f034f6af531eff700 *DESCRIPTION
+f7ad361487f6e6d4627ed47e8ae95b11 *DESCRIPTION
 aa61c28654327fc50d823acc4c563e40 *ggdmc.Rproj
 b0565b192c1d44d4b87ac924aedeb493 *inst/examples/ggdmc_3_4.R
 9628a114410dfe445dcdd2484bd5c476 *inst/examples/ggdmc_4_7_fixed.R
@@ -64,14 +64,14 @@ d2d8960d4261e309ad35301c9f426fd7 *man/summary.hyper.Rd
 7d7f9fd82c41672823e5dc735997cd50 *man/theta.as.mcmc.list.Rd
 38c06477f7d419caa21c13b71b449040 *man/transform.Rd
 e72d3e11e9b4b5fb63da624e0c9d4868 *man/view.Rd
-bfe298366191763bf5e40e8f54922c42 *NAMESPACE
+0344d0f69f2e9948436033e273055d03 *NAMESPACE
 4e95bfc086609b87d08f6972c5a2cef2 *NEWS
 3322acbb42018a9dbdce80a3d331a257 *R/dmc_analysis.R
-5630345aa820e5691065ea3140c3f3c9 *R/dmc_hierarchical.R
+1a595a71916c43ae865a66d4b1b61c43 *R/dmc_hierarchical.R
 51dfd77b5e0f03f53ed5c0389eec9e8e *R/dmc_model.R
 0a45ac36b92008ec22d5ca9bdf3fbc1c *R/dmc_plotting.R
 68c211e43cedb96cc63c8698ecbf7321 *R/dmc_sampling.R
-b84791c7d4fc389a279b921932b06cc2 *README.md
+32d0f3a4e928af9ac849b6be18e09579 *README.md
 855c02e3e85526cdf4ac1ff265f18e62 *R/ggdmc_class.R
 7bdd17c88c5b4ec12760be7dfc7a7b8b *R/ggdmc_eam.R
 c9603194ea096ea94877358ba37eeb6a *R/ggdmc_plotting.R

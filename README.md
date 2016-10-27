@@ -1,4 +1,4 @@
-# DMC with Graphic Grammar, Parallel Computation and C++ Capabilities
+# DMC with Parallel Computation and C++ Capabilities
 
 ggdmc implements hierarchical Bayesian, evidence accumulation model (HB-EAM). 
 This release includes drift-diffusion model (Ratcliff, 1978). Based on 
@@ -88,23 +88,21 @@ plot(samples0)  ## Check traceplot to see if chains converged
 
 
 ### Prerequisities
- -  R (>= 3.0.2)
- -  Rcpp (>= 0.12.3), RcppArmadillo (>= 0.6.700.6.0), ggplot2 (>= 2.1.0),
- rtdists (>= 0.6-6), gridExtra (>= 2.2-1), ggmcmc (>= 0.7.3), 
- ggthemes (>= 3.0.1), snow (>= 0.3-13), snowfall (>= 1.84.6-1), 
- stats (>= 3.2.2), loo (>= 0.1.6) 
- - coda (>= 0.16-1)
+ - R (>= 3.0.2)
+ - Rcpp (>= 0.12.3), RcppArmadillo (>= 0.6.700.6.0), ggplot2 (>= 2.1.0),
+   rtdists (>= 0.6-6), gridExtra (>= 2.2-1), ggmcmc (>= 0.7.3), 
+   ggthemes (>= 3.0.1), stats (>= 3.2.2), loo (>= 0.1.6), coda (>= 0.16-1)
  - Windows users need Rtools (>= 3.3.0.1959), and Microsoft Visual Studio 
- Communit (>= 2015) 
+   Communit (>= 2015) (for Open MPI library and M_PI macro support)
  - OS X users need to install Open MPI library
- - Linux/Unix users need to install Open MPI library, if it has not 
- been installed. 
+ - Linux/Unix users may need to install Open MPI library, if it has not 
+   been installed. 
 
 Successful cases for Windows environment:
   - Microsoft Visual Studio Community 2015 (Version 14.0.25421.03 Update 3) on  
-  Windows 10 64 bits.
+    Windows 10 64 bits.
   - Microsoft Visual Studio Community 2015 (Version 14.0.24720.1 Update 1), 
-  with Rtools 3.4 on Windows 10 64 bits.
+    with Rtools 3.4 on Windows 10 64 bits.
   
 Unsuccseeful cases for Windows environments:
   - Microsoft Blend for Visual Studio Express 2015   
