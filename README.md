@@ -1,4 +1,4 @@
-# DMC with Graphic Grammar, Parallel Computing and C++ Capabilities
+# DMC with Graphic Grammar, Parallel Computation and C++ Capabilities
 
 ggdmc implements hierarchical Bayesian, evidence accumulation model (HB-EAM). 
 This release includes drift-diffusion model (Ratcliff, 1978). Based on 
