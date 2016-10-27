@@ -71,7 +71,7 @@ sigma.prior <- prior.p.dmc(
 
 pp.prior <- list(mu.prior, sigma.prior)
 
-hsamples0 <- h.samples.dmc(nmc=50, p.prior=p.prior, pp.prior=pp.prior,
+hsamples0 <- h.samples.dmc(nmc=10, p.prior=p.prior, pp.prior=pp.prior,
   data=mdi1, thin=1)
 hsamples0 <- h.run.dmc(hsamples0)
 gelman.diag.dmc(hsamples0, hyper=TRUE)

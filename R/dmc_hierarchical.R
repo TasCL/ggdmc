@@ -1057,10 +1057,8 @@ migrate.h <- function(use.theta,use.logprior,use.loglike,
 #' argument
 #' @param verbose a swtich to see debugging information
 #' @keywords h.run.dmc
-#' @import snowfall
-#' @import rtdists
-#' @import pracma
-#' @import statmod
+#' @importFrom snow setDefaultClusterOptions
+#' @importFrom snowfall sfInit sfClusterSetupRNG sfExportAll sfLapply
 #' @importFrom parallel mclapply
 #' @export
 #' @examples
@@ -1180,13 +1178,10 @@ h.run.dmc <- function(samples, report=100, cores=1, blocks=NA, p.migrate=0,
       dimnames(out$theta) <- list(NULL, out$p.names, NULL)
     } else {                    ## fixed-effect for multiple subjects
       if (os == "windows" & cores > 1) {
-        snowfall::sfInit(parallel=TRUE, cpus=cores, type="SOCK")
-        snowfall::sfClusterSetupRNG()
-        snowfall::sfLibrary(ggdmc)
-        snowfall::sfLibrary(rtdists)
-        snowfall::sfLibrary(pracma)
-        snowfall::sfLibrary(statmod)
-        snowfall::sfExportAll()
+      ## if (os == "linux" & cores > 1) { ## For testing snow & snowfall
+        sfInit(parallel=TRUE, cpus=cores, type="SOCK")
+        sfClusterSetupRNG()
+        sfExportAll()
 
         out <- snowfall::sfLapply(samples, run_data, setting_in);
         snowfall::sfStop()

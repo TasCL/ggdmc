@@ -502,6 +502,7 @@ p.df.dmc <- function(model, p.vector, cell, n1order=TRUE)
 #' account for slowing or speeding over the course of the experiment.
 #' @param ... other arguments
 #' @export
+#' @importFrom rtdists rdiffusion
 #' @importFrom stats simulate
 #' @examples
 #' model <- model.dmc(

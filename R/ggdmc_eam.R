@@ -96,6 +96,7 @@ likelihood.default <- function(data, p.vector, min.like=1e-10, ...)
 
 #' @rdname likelihood
 #' @importFrom utils glob2rx
+#' @importFrom rtdists ddiffusion
 #' @export
 likelihood.rd <- function(data,  p.vector, min.like=1e-10, ...)
 {
@@ -144,6 +145,7 @@ likelihood.rd <- function(data,  p.vector, min.like=1e-10, ...)
   pmax(likelihood, min.like)
 }
 
+#' @importFrom rtdists n1PDF
 #' @rdname likelihood
 #' @export
 likelihood.norm <- function(data, p.vector, min.like=1e-10, ... )

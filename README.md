@@ -91,8 +91,8 @@ plot(samples0)  ## Check traceplot to see if chains converged
  -  R (>= 3.0.2)
  -  Rcpp (>= 0.12.3), RcppArmadillo (>= 0.6.700.6.0), ggplot2 (>= 2.1.0),
  rtdists (>= 0.6-6), gridExtra (>= 2.2-1), ggmcmc (>= 0.7.3), 
- ggthemes (>= 3.0.1),  snowfall (>= 1.84.6-1), stats (>= 3.2.2), 
- pracma (>= 1.8.8), statmod (>= 1.4.24), loo (>= 0.1.6) 
+ ggthemes (>= 3.0.1), snow (>= 0.3-13), snowfall (>= 1.84.6-1), 
+ stats (>= 3.2.2), loo (>= 0.1.6) 
  - coda (>= 0.16-1)
  - Windows users need Rtools (>= 3.3.0.1959), and Microsoft Visual Studio 
  Communit (>= 2015) 
