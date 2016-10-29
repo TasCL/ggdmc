@@ -6,7 +6,7 @@ Voss, Rothermund, and Voss's (2004) fast-dm 30.2 density.c, the DDM in
 ggdmc implements the equations in their paper as C++ routines plus a new
 parallel integration function to handle high precision requirement. 
 
-ggdmc is derived from Andrew Heathcote's Dynamiuc Model of Choice (DMC), 
+ggdmc is derived from Andrew Heathcote's Dynamic Model of Choice (DMC), 
 which has also implemented other numerous EAMs.  Identical to DMC, ggdmc uses 
 differential evolution Markov Chain Monte Carlo sampler to search optimal 
 theta and phi that maximise posterior likelihood. 
@@ -43,7 +43,7 @@ p.vector <- c(a=1, v=1, z=.5, sz=.25, sv=0.2,t0=.15)
 ## One usually would like to fit his/her own empirical data.
 dat1 <- simulate(m1, nsim=1e2, p.vector=p.vector)
 
-## Set up a data model instace. This binds the empirical/simulated data with 
+## Set up a data model instance. This binds the empirical/simulated data with 
 ## the model set-up
 mdi1 <- data.model.dmc(dat1, m1)
 
@@ -93,7 +93,7 @@ plot(samples0)  ## Check traceplot to see if chains converged
    rtdists (>= 0.6-6), gridExtra (>= 2.2-1), ggmcmc (>= 0.7.3), 
    ggthemes (>= 3.0.1), stats (>= 3.2.2), loo (>= 0.1.6), coda (>= 0.16-1)
  - Windows users need Rtools (>= 3.3.0.1959), and Microsoft Visual Studio 
-   Communit (>= 2015) (for Open MPI library and M_PI macro support)
+   Community (>= 2015) (for Open MPI library and M_PI macro support)
  - OS X users need to install Open MPI library
  - Linux/Unix users may need to install Open MPI library, if it has not 
    been installed. 
