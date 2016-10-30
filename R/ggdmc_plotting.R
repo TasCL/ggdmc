@@ -149,11 +149,9 @@ plot.pp.ggdmc <- function(x, y=NULL, style="pdf", gpvar1=NULL, mode="mode",
 #' \code{ggs_autocorrelation}
 #'
 #' @param x a DMC sample/object
-#' @param lag.max to make it compartible to acf. Default NULL. maximum lag at
-#' which to calculate the acf. Default is 10*log10(N/m) where N is the number
-#' of observations and m the number of series. Will be automatically limited
-#' to one less than the number of observations in the series.
-#' @param start plot from which iteration
+#' @param lag.max to make it compartible to \code{acf} of \code{stats} pacakge.
+#' Default is NULL
+#' @param start plot from which iteration. Default is from the first iteration.
 #' @importFrom ggmcmc ggs ggs_autocorrelation
 #' @export
 acf.dmc <- function(x, lag.max=NULL, start=1) {
@@ -169,7 +167,7 @@ acf.dmc <- function(x, lag.max=NULL, start=1) {
 #' \code{ggs_pairs}
 #'
 #' @param x a DMC sample/object
-#' @param start plot from which iteration
+#' @param start plot from which iteration. Default is from the first iteration.
 #' @param ... other arguments
 #' @export
 #' @importFrom ggmcmc ggs ggs_pairs

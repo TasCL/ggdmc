@@ -97,6 +97,12 @@ plot(samples0)  ## Check traceplot to see if chains converged
  - OS X users need to install Open MPI library
  - Linux/Unix users may need to install Open MPI library, if it has not 
    been installed. 
+ - Note that 
+ [Armadillo](https://cran.r-project.org/web/packages/RcppArmadillo/index.html)
+   requires a fairly recent compiler; for the g++ family at least version 4.6.*
+   is required. 
+ - This package uses Rcpp::Nullable, so Rcpp >= 0.12.1 is required.
+   
 
 Successful cases for Windows environment:
   - Microsoft Visual Studio Community 2015 (Version 14.0.25421.03 Update 3) on  
