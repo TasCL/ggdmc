@@ -103,13 +103,13 @@ plot(samples0)  ## Check traceplot to see if chains converged
  - This package uses Rcpp::Nullable, so Rcpp >= 0.12.1 is required.
    
 
-Successful cases for Windows environment:
+Successful cases for Windows OS:
   - Microsoft Visual Studio Community 2015 (Version 14.0.25421.03 Update 3) on  
     Windows 10 64 bits.
   - Microsoft Visual Studio Community 2015 (Version 14.0.24720.1 Update 1), 
     with Rtools 3.4 on Windows 10 64 bits.
   
-Unsuccseeful cases for Windows environments:
+Unsuccseeful cases for Windows OS:
   - Microsoft Blend for Visual Studio Express 2015   
 
 ### Installing
