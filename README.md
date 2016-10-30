@@ -124,6 +124,14 @@ install.packages("tnorm_0.1.0.0.tar.gz", repos = NULL, type="source")
 
 ```
 
+## Citation
+
+If you use this package, please cite the software, for example:
+
+Lin, Y.-S., & Heathcote, A (in preparation). ggdmc: An R package for 
+hierarchical Bayesian evidence accumulation models, using differential
+evolution Markov Chain Monte Carlo Sampler. Retrieved from
+https://github.com/TasCL/ggdmc
 
 ## Contributors
 
