@@ -9,12 +9,10 @@ acf.dmc(x, lag.max = NULL, start = 1)
 \arguments{
 \item{x}{a DMC sample/object}
 
-\item{lag.max}{to make it compartible to acf. Default NULL. maximum lag at
-which to calculate the acf. Default is 10*log10(N/m) where N is the number
-of observations and m the number of series. Will be automatically limited
-to one less than the number of observations in the series.}
+\item{lag.max}{to make it compartible to \code{acf} of \code{stats} pacakge.
+Default is NULL}
 
-\item{start}{plot from which iteration}
+\item{start}{plot from which iteration. Default is from the first iteration.}
 }
 \description{
 This is a wrapper function to plot a DMC object, using \pkg{ggmcmc}

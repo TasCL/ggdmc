@@ -509,7 +509,7 @@ public:
     int nChains = useTheta.n_rows ; // useTheta
     int npars   = useTheta.n_cols;  // npars
     double gamma = std::isnan(gammaMult) ? Rf_runif(0.5, 1.0) :
-      gammaMult/sqrt(2*npars) ;
+      gammaMult/std::sqrt(2.0*(double)npars) ;
     arma::vec gamma_vec = Rcpp::rep(gamma, npars) ;  // make it 1 x 8
     arma::mat out(nChains, 2+npars) ;
     std::vector<int> shuffledChains = shuffle_chains(nChains) ;
@@ -567,7 +567,7 @@ public:
     int nChains = useTheta.n_rows ; // useTheta
     int npars   = useTheta.n_cols;  // npars
     double gamma = std::isnan(gammaMult) ? Rf_runif(0.5, 1.0) :
-      gammaMult/sqrt(2*npars) ;
+      gammaMult/std::sqrt(2.0*(double)npars) ;
     arma::vec gamma_vec = Rcpp::rep(gamma, npars) ;  // make it 1 x 8
     arma::mat out(nChains, 2+npars) ;
     std::vector<int> shuffledChains = shuffle_chains(nChains) ;
@@ -626,7 +626,7 @@ public:
     int nChains = useTheta.n_rows ; // useTheta
     int npars   = useTheta.n_cols;  // npars
     double gamma = std::isnan(gammaMult) ? Rf_runif(0.5, 1.0) :
-      gammaMult/sqrt(2*npars) ;
+      gammaMult/std::sqrt(2.0*(double)npars) ;
     arma::vec gamma_vec = Rcpp::rep(gamma, npars) ;  // make it 1 x 8
     arma::mat out(nChains, 2+npars) ;
 
@@ -683,7 +683,7 @@ public:
     int nChains  = useTheta.n_rows ;
     int npars    = useTheta.n_cols ;
     double gamma = std::isnan(gammaMult) ? Rf_runif(0.5, 1.0) :
-      gammaMult/std::sqrt(2*npars) ;
+      gammaMult/std::sqrt(2.0*(double)npars) ;
     arma::vec gamma_vec = Rcpp::rep(gamma, npars) ;
     arma::mat out (nChains, 2 + npars) ;
     std::vector<int> shuffledChains = shuffle_chains(nChains) ;
@@ -737,7 +737,7 @@ public:
     int nChains  = useTheta.n_rows ;
     int npars    = useTheta.n_cols ;
     double gamma = std::isnan(gammaMult) ? Rf_runif(0.5, 1.0) :
-      gammaMult/std::sqrt(2*npars) ;
+      gammaMult/std::sqrt(2.0*(double)npars) ;
     arma::vec gamma_vec = Rcpp::rep(gamma, npars) ;
     arma::mat out (nChains, 2 + npars) ;
     std::vector<int> shuffledChains = shuffle_chains(nChains) ;
@@ -797,7 +797,7 @@ public:
 
     // Brandon's tunning parameter (gamma) page 372; step size
     double hgamma = std::isnan(gammaMult) ? Rf_runif(0.5, 1.0) :
-      gammaMult/std::sqrt(2*npars*2) ; // extra *2 as p1 and p2
+      gammaMult/std::sqrt(4.0*(double)npars) ; // extra *2 as p1 and p2
     arma::vec hgamma_vec = Rcpp::rep(hgamma, npars) ;
     arma::mat out (nChains, 2 + 2*npars) ;
     std::vector<int> shuffledChains = shuffle_chains(nChains) ;

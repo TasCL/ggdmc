@@ -87,7 +87,7 @@ plot(samples0)  ## Check traceplot to see if chains converged
 ```
 
 
-### Prerequisities
+### Prerequisites
  - R (>= 3.0.2)
  - Rcpp (>= 0.12.3), RcppArmadillo (>= 0.6.700.6.0), ggplot2 (>= 2.1.0),
    rtdists (>= 0.6-6), gridExtra (>= 2.2-1), ggmcmc (>= 0.7.3), 
@@ -97,7 +97,7 @@ plot(samples0)  ## Check traceplot to see if chains converged
  - OS X users need to install Open MPI library
  - Linux/Unix users may need to install Open MPI library, if it has not 
    been installed. 
- - [Armadillo](https://cran.r-project.org/web/packages/RcppArmadillo/index.html)
+ - [Armadillo](https://CRAN.R-project.org/package=RcppArmadillo)
    requires a recent compiler; for the g++ family at least version 4.6.*
    is required. Some Linux/Unix distributions may use a g++ earlier than 4.6.*.  
  - This package uses Rcpp::Nullable, so Rcpp >= 0.12.1 is required.

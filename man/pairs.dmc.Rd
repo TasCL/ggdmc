@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{a DMC sample/object}
 
-\item{start}{plot from which iteration}
+\item{start}{plot from which iteration. Default is from the first iteration.}
 
 \item{...}{other arguments}
 }
